@@ -31,7 +31,7 @@ export const updateDiary = async (req, res) => {
   const diary = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("Diary not found");
+    return res.status(404).send("Diary not found.");
 
   const updatedDiary = await DiaryModel.findByIdAndUpdate(_id, diary, {
     new: true,
@@ -43,7 +43,7 @@ export const deleteDiary = async (req, res) => {
   const { id: _id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("Diary not found");
+    return res.status(404).send("Diary not found.");
 
   await DiaryModel.findByIdAndRemove(_id);
 
