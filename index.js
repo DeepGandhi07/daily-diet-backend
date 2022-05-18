@@ -14,9 +14,7 @@ app.use(bodyParser.urlencoded({ limit: "1mb", extended: true }));
 app.use(cors());
 app.use("/diaries", diariesRoutes);
 
-app.get("/", (re1, res) => {
-  res.end("Daily Diet API");
-});
+app.get("/", (req, res) => res.send("Daily Diet API"));
 
 const PORT = process.env.PORT || 5000;
 
