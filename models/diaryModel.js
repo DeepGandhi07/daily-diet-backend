@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const diarySchema = mongoose.Schema({
-  date: String,
   name: String,
+  creator: String,
   demand: { kcal: Number, protein: Number, carbs: Number, fat: Number },
   meals: [Object],
   nutrients: { kcal: Number, protein: Number, carbs: Number, fat: Number },
@@ -11,6 +11,10 @@ const diarySchema = mongoose.Schema({
     protein: { bgcolor: String, completed: Number, label: String },
     carbs: { bgcolor: String, completed: Number, label: String },
     fat: { bgcolor: String, completed: Number, label: String },
+  },
+  createdAt: {
+    type: Date,
+    default: new Date(),
   },
 });
 
