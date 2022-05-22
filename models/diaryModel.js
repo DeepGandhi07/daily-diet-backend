@@ -14,6 +14,4 @@ const diarySchema = mongoose.Schema({
   },
 });
 
-const DiaryModel = mongoose.model("DiaryModel", diarySchema);
-
-export default DiaryModel;
+export default mongoose.model("DiaryModel", diarySchema);

@@ -4,7 +4,8 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import diariesRoutes from "./routes/diaries.js";
+import diaryRoutes from "./routes/diaries.js";
+import userRoutes from "./routes/users.js";
 
 const app = express();
 dotenv.config();
@@ -12,7 +13,8 @@ dotenv.config();
 app.use(bodyParser.json({ limit: "1mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "1mb", extended: true }));
 app.use(cors());
-app.use("/diaries", diariesRoutes);
+app.use("/diaries", diaryRoutes);
+app.use("/user", userRoutes);
 
 app.get("/", (req, res) => res.send("Daily Diet API"));
 
