@@ -3,7 +3,6 @@ import DiaryModel from "../models/diaryModel.js";
 
 export const getDiaries = async (req, res) => {
   try {
-    if (!req.userId) return res.json({ message: "Unauthenticated" });
     const diaries = await DiaryModel.find();
 
     res.status(200).json(diaries);
