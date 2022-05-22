@@ -1,9 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import UserModel from "../models/userModel.js";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 export const signin = async (req, res) => {
   const { email, password } = req.body;
@@ -23,7 +20,7 @@ export const signin = async (req, res) => {
 
     const token = jwt.sign(
       { id: existingUser._id, email: existingUser.email },
-      process.env.SECRET,
+      "dailydiet0404",
       { expiresIn: "1h" }
     );
 
@@ -34,29 +31,27 @@ export const signin = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
-  console.log("controller");
-  console.log(req.body);
-  const { username, email, password, confirmPassword } = req.body;
+  const { username, email, password, confirmpassword } = req.body;
 
   try {
     const existingUser = await UserModel.findOne({ email });
     if (existingUser)
       return res.status(400).json({ message: "User already exists." });
 
-    if (password !== confirmPassword)
+    if (password !== confirmpassword)
       return res.status(400).json({ message: "Passwords don't match." });
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await UserModel.create({
       name: username,
-      email,
       password: hashedPassword,
+      email,
     });
 
     const token = jwt.sign(
       { id: user._id, email: user.email },
-      process.env.SECRET,
+      "dailydiet0404",
       { expiresIn: "1h" }
     );
 

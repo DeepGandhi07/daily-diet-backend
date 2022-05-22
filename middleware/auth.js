@@ -1,26 +1,22 @@
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const auth = async (req, res, next) => {
   try {
-    console.log("req");
-    console.log(req);
-    console.log("res");
-    console.log(res);
-    const token = req.headers.authorization.split(" ")[1];
-    const isCustomAuth = token.length < 500;
+    // console.log("req");
+    // console.log(req);
+    // const token = req.headers.authorization.split(" ")[1];
+    console.log(req.headers);
+    // const isCustomAuth = token.length < 500;
 
-    let decodedData;
+    // let decodedData;
 
-    if (token && isCustomAuth) {
-      decodedData = jwt.verify(token, process.env.SECRET);
-      req.userId = decodedData?.id;
-    } else {
-      decodedData.jwt.decode(token);
-      req.userId = decodedData?.sub;
-    }
+    // if (token && isCustomAuth) {
+    //   decodedData = jwt.verify(token, "dailydiet0404");
+    //   req.userId = decodedData?.id;
+    // } else {
+    //   decodedData.jwt.decode(token);
+    //   req.userId = decodedData?.sub;
+    // }
 
     next();
   } catch (error) {

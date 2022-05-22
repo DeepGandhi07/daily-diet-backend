@@ -3,6 +3,7 @@ import DiaryModel from "../models/diaryModel.js";
 
 export const getDiaries = async (req, res) => {
   try {
+    if (!req.userId) return res.json({ message: "Unauthenticated" });
     const diaries = await DiaryModel.find();
 
     res.status(200).json(diaries);
@@ -17,7 +18,7 @@ export const createDiary = async (req, res) => {
   const newDiary = new DiaryModel(diary);
 
   try {
-    if (!req.userId) return res.json({ message: "Unauthenticated" });
+    // if (!req.userId) return res.json({ message: "Unauthenticated" });
     await newDiary.save();
 
     res.status(201).json(newDiary);
@@ -27,7 +28,7 @@ export const createDiary = async (req, res) => {
 };
 
 export const updateDiary = async (req, res) => {
-  if (!req.userId) return res.json({ message: "Unauthenticated" });
+  // if (!req.userId) return res.json({ message: "Unauthenticated" });
 
   const { id: _id } = req.params;
 
@@ -43,7 +44,7 @@ export const updateDiary = async (req, res) => {
 };
 
 export const deleteDiary = async (req, res) => {
-  if (!req.userId) return res.json({ message: "Unauthenticated" });
+  // if (!req.userId) return res.json({ message: "Unauthenticated" });
 
   const { id: _id } = req.params;
 
