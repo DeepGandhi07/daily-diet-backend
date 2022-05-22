@@ -34,6 +34,8 @@ export const signin = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
+  console.log("controller");
+  console.log(req.body);
   const { username, email, password, confirmPassword } = req.body;
 
   try {
