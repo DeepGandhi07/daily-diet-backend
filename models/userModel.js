@@ -12,7 +12,6 @@ const userSchema = mongoose.Schema({
     activity: Number,
     bmr: Number,
     demandPercentage: {
-      kcal: Number,
       protein: Number,
       carbs: Number,
       fat: Number,
