@@ -60,3 +60,13 @@ export const signup = async (req, res) => {
     res.status(500).json({ message: "Something went wrong." });
   }
 };
+
+export const updateProfile = async (req, res) => {
+  const update = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(req.userId))
+    return res.status(404).send("User not found.");
+
+  const updatedUser = await UserModel.findByIdAndUpdate(req.userId, update);
+  res.json(updatedUser);
+};
