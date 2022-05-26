@@ -71,7 +71,7 @@ export const signup = async (req, res) => {
 };
 
 export const updateProfile = async (req, res) => {
-  const updatedProfile = req.body;
+  const { updatedProfile } = req.body;
   const { id: _id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(req.userId))
