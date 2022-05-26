@@ -71,18 +71,22 @@ export const signup = async (req, res) => {
 };
 
 export const updateProfile = async (req, res) => {
-  const { updatedProfile } = req.body;
+  const updatedProfile = req.body;
   const { id: _id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(req.userId))
     return res.status(404).send("User not found.");
 
-  const updatedUser = await UserModel.findByIdAndUpdate(
-    _id,
-    { profile: updatedProfile },
-    {
-      new: true,
-    }
-  );
-  res.json(updatedUser);
+  try {
+    const updatedUser = await UserModel.findOneAndUpdate(
+      _id,
+      { profile: updatedProfile },
+      {
+        new: true,
+      }
+    );
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
