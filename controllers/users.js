@@ -47,6 +47,15 @@ export const signup = async (req, res) => {
       name: username,
       password: hashedPassword,
       email,
+      profile: {
+        weight: null,
+        height: null,
+        age: null,
+        activity: null,
+        bmr: null,
+        demandPercentage: { protein: 20, carbs: 50, fat: 30 },
+        demandAmount: { kcal: null, protein: null, carbs: null, fat: null },
+      },
     });
 
     const token = jwt.sign(
@@ -62,15 +71,14 @@ export const signup = async (req, res) => {
 };
 
 export const updateProfile = async (req, res) => {
-  const { userProfile } = req.body;
-  const { id } = req.params;
+  const updatedProfile = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(req.userId))
     return res.status(404).send("User not found.");
 
   const updatedUser = await UserModel.findOneAndUpdate(
-    { _id: id },
-    { profile: userProfile },
+    { _id: req.userId },
+    { profile: updatedProfile },
     {
       new: true,
     }
