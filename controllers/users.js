@@ -48,13 +48,13 @@ export const signup = async (req, res) => {
       password: hashedPassword,
       email,
       profile: {
-        weight: null,
-        height: null,
-        age: null,
-        activity: null,
-        bmr: null,
+        weight: 0,
+        height: 0,
+        age: 0,
+        activity: 0,
+        bmr: 0,
         demandPercentage: { protein: 20, carbs: 50, fat: 30 },
-        demandAmount: { kcal: null, protein: null, carbs: null, fat: null },
+        demandAmount: { kcal: 0, protein: 0, carbs: 0, fat: 0 },
       },
     });
 
