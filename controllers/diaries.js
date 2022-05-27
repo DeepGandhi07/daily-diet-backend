@@ -3,8 +3,7 @@ import DiaryModel from "../models/diaryModel.js";
 
 export const getDiaries = async (req, res) => {
   try {
-    // const diaries = await DiaryModel.find({ creator: req.userId });
-    const diaries = await DiaryModel.find();
+    const diaries = await DiaryModel.find({ creator: req.userId });
 
     res.status(200).json(diaries);
   } catch (error) {
