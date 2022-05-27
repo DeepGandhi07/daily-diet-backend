@@ -80,7 +80,7 @@ export const updateProfile = async (req, res) => {
   try {
     const updatedUser = await UserModel.findOneAndUpdate(
       _id,
-      { $set: { profile: updatedProfile } },
+      { name: "test" },
       {
         new: true,
       }
