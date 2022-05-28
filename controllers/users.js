@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 import UserModel from "../models/userModel.js";
 
 export const getUsers = async (req, res) => {
@@ -84,6 +85,10 @@ export const signup = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   const { profile } = req.body;
+  console.log("profile");
+  console.log(profile);
+  console.log("req.body log");
+  console.log(req.body);
 
   if (!mongoose.Types.ObjectId.isValid(req.userId))
     return res.status(404).send("User not found.");
