@@ -12,6 +12,6 @@ const router = express.Router();
 router.get("/", auth, getUsers);
 router.post("/signin", signin);
 router.post("/signup", signup);
-router.post("/update", auth, updateProfile);
+router.patch("/update/:id", auth, updateProfile);
 
 export default router;
