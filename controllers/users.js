@@ -61,12 +61,14 @@ export const signup = async (req, res) => {
         weight: 0,
         height: 0,
         age: 0,
-        activity: 0,
+        activity: 0.0,
         bmr: 0,
         demandPercentage: { protein: 20, carbs: 50, fat: 30 },
         demandAmount: { kcal: 0, protein: 0, carbs: 0, fat: 0 },
       },
     });
+
+    await user.save();
 
     const token = jwt.sign(
       { id: user._id, email: user.email },
