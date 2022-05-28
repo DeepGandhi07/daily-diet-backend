@@ -98,7 +98,7 @@ export const updateProfile = async (req, res) => {
       }
     ).exec();
 
-    res.json(profile);
+    res.json(updatedUser);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
