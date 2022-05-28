@@ -88,14 +88,17 @@ export const updateProfile = async (req, res) => {
     return res.status(404).send("User not found.");
 
   try {
-    const updatedUser = await UserModel.findOneAndUpdate(
-      _id,
-      { profile: updatedProfile },
-      {
-        new: true,
-      }
-    );
-    res.json(updatedUser);
+    const existingUser = await UserModel.findOne({ _id });
+    if (!existingUser)
+      return res.status(404).json({ message: "User not found." });
+
+    const updatedUser = { ...existingUser, profile: updatedProfile };
+
+    const updated = await UserModel.findOneAndUpdate(_id, updatedUser, {
+      new: true,
+    });
+
+    res.json(updated);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
