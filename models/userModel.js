@@ -5,17 +5,58 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
   email: { type: String, required: true },
   profile: {
-    weight: Number,
-    height: Number,
-    age: Number,
-    activity: Number,
-    bmr: Number,
-    demandPercentage: {
-      protein: Number,
-      carbs: Number,
-      fat: Number,
+    weight: {
+      type: Number,
+      default: 0,
     },
-    demandAmount: { kcal: Number, protein: Number, carbs: Number, fat: Number },
+    height: {
+      type: Number,
+      default: 0,
+    },
+    age: {
+      type: Number,
+      default: 0,
+    },
+    activity: {
+      type: Number,
+      default: 0,
+    },
+    bmr: {
+      type: Number,
+      default: 0,
+    },
+    demandPercentage: {
+      protein: {
+        type: Number,
+        default: 20,
+      },
+      carbs: {
+        type: Number,
+        default: 50,
+      },
+      fat: {
+        type: Number,
+        default: 30,
+      },
+    },
+    demandAmount: {
+      kcal: {
+        type: Number,
+        default: 0,
+      },
+      protein: {
+        type: Number,
+        default: 0,
+      },
+      carbs: {
+        type: Number,
+        default: 0,
+      },
+      fat: {
+        type: Number,
+        default: 0,
+      },
+    },
   },
 });
 
