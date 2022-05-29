@@ -35,7 +35,14 @@ export const signin = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ user: existingUser, token });
+    res.status(200).json({
+      user: {
+        name: existingUser.username,
+        email: existingUser.email,
+        profile: existingUser.profile,
+      },
+      token,
+    });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
   }
@@ -68,7 +75,10 @@ export const signup = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ user, token });
+    res.status(200).json({
+      user: { name: user.username, email: user.email, profile: user.profile },
+      token,
+    });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
   }
@@ -89,7 +99,7 @@ export const updateProfile = async (req, res) => {
       }
     ).exec();
 
-    res.json(updatedUser);
+    res.json(updatedUser.profile);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
