@@ -37,7 +37,7 @@ export const signin = async (req, res) => {
 
     res.status(200).json({
       user: {
-        name: existingUser.username,
+        name: existingUser.name,
         email: existingUser.email,
         profile: existingUser.profile,
       },
@@ -76,7 +76,7 @@ export const signup = async (req, res) => {
     );
 
     res.status(200).json({
-      user: { name: user.username, email: user.email, profile: user.profile },
+      user: { name: user.name, email: user.email, profile: user.profile },
       token,
     });
   } catch (error) {
