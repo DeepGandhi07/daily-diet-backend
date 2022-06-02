@@ -2,6 +2,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import UserModel from "../models/userModel.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const getUsers = async (req, res) => {
   try {
@@ -31,7 +34,7 @@ export const signin = async (req, res) => {
 
     const token = jwt.sign(
       { id: existingUser._id, email: existingUser.email },
-      "dailydiet0404",
+      process.env.SECRET,
       { expiresIn: "1h" }
     );
 
@@ -71,7 +74,7 @@ export const signup = async (req, res) => {
 
     const token = jwt.sign(
       { id: user._id, email: user.email },
-      "dailydiet0404",
+      process.env.PORT,
       { expiresIn: "1h" }
     );
 
