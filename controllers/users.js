@@ -74,7 +74,7 @@ export const signup = async (req, res) => {
 
     const token = jwt.sign(
       { id: user._id, email: user.email },
-      process.env.PORT,
+      process.env.SECRET,
       { expiresIn: "1h" }
     );
 
