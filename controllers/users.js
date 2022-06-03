@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import UserModel from "../models/userModel.js";
 import dotenv from "dotenv";
+import { v4 as uuidv4 } from "uuid";
 
 dotenv.config();
 
@@ -13,6 +14,38 @@ export const getUsers = async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     res.status(404).json({ message: error.message });
+  }
+};
+
+export const auth = async (req, res) => {
+  try {
+    const existingUser = await UserModel.findOne({ email: req.email });
+    if (!existingUser) {
+      const hashedPassword = await bcrypt.hash(uuidv4(), 12);
+
+      const user = await UserModel.create({
+        _id: req.userId,
+        name: req.name,
+        password: hashedPassword,
+        email: req.email,
+      });
+
+      await user.save();
+
+      res.status(200).json({
+        user: { name: user.name, email: user.email, profile: user.profile },
+      });
+    }
+
+    res.status(200).json({
+      user: {
+        name: existingUser.name,
+        email: existingUser.email,
+        profile: existingUser.profile,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong." });
   }
 };
 
