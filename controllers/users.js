@@ -19,6 +19,8 @@ export const getUsers = async (req, res) => {
 
 export const externalSignin = async (req, res) => {
   try {
+    const existingToken = req.headers.authorization.split(" ")[1];
+
     const existingUser = await UserModel.findOne({ email: req.email });
     if (!existingUser) {
       const hashedPassword = await bcrypt.hash(uuidv4(), 12);
@@ -34,6 +36,7 @@ export const externalSignin = async (req, res) => {
 
       res.status(200).json({
         user: { name: user.name, email: user.email, profile: user.profile },
+        token: existingToken,
       });
     }
 
@@ -43,6 +46,7 @@ export const externalSignin = async (req, res) => {
         email: existingUser.email,
         profile: existingUser.profile,
       },
+      token: existingToken,
     });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
