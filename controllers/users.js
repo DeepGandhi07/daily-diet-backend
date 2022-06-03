@@ -17,7 +17,7 @@ export const getUsers = async (req, res) => {
   }
 };
 
-export const auth = async (req, res) => {
+export const externalSignup = async (req, res) => {
   try {
     const existingUser = await UserModel.findOne({ email: req.email });
     if (!existingUser) {
