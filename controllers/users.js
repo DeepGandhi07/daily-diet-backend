@@ -27,7 +27,7 @@ export const externalSignin = async (req, res) => {
       const hashedPassword = await bcrypt.hash(uuidv4(), 12);
 
       const user = await UserModel.create({
-        _id: mongoose.Types.ObjectId("123456789"),
+        _id: mongoose.Schema.Types.ObjectId("123456789"),
         name: decodedData.name,
         password: hashedPassword,
         email: decodedData.email,
