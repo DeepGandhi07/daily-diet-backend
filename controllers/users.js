@@ -32,8 +32,6 @@ export const externalSignin = async (req, res) => {
         email: decodedData.email,
       });
 
-      user._id = mongoose.ObjectId(decodedData.sub);
-
       await user.save();
 
       res.status(200).json({
@@ -129,20 +127,36 @@ export const signup = async (req, res) => {
 export const updateProfile = async (req, res) => {
   const profile = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(req.userId))
-    return res.status(404).send("User not found.");
+  if (/^[0-9]+$/.test(req.userId)) {
+    try {
+      const updatedUser = await UserModel.findOneAndUpdate(
+        { email: req.userId },
+        { profile },
+        {
+          new: true,
+        }
+      ).exec();
 
-  try {
-    const updatedUser = await UserModel.findOneAndUpdate(
-      { _id: req.userId },
-      { profile },
-      {
-        new: true,
-      }
-    ).exec();
+      res.json(updatedUser.profile);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  } else {
+    if (!mongoose.Types.ObjectId.isValid(req.userId))
+      return res.status(404).send("User not found.");
 
-    res.json(updatedUser.profile);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    try {
+      const updatedUser = await UserModel.findOneAndUpdate(
+        { _id: req.userId },
+        { profile },
+        {
+          new: true,
+        }
+      ).exec();
+
+      res.json(updatedUser.profile);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
 };
