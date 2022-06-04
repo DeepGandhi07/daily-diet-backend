@@ -127,7 +127,7 @@ export const signup = async (req, res) => {
 export const updateProfile = async (req, res) => {
   const profile = req.body;
 
-  if (/^[0-9]+$/.test(req.userId)) {
+  if (req.userId.includes("@")) {
     try {
       const updatedUser = await UserModel.findOneAndUpdate(
         { email: req.userId },
