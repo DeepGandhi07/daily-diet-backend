@@ -27,7 +27,7 @@ export const externalSignin = async (req, res) => {
       const hashedPassword = await bcrypt.hash(uuidv4(), 12);
 
       const user = await UserModel.create({
-        _id: decodedData.userId,
+        _id: decodedData.sub,
         name: decodedData.name,
         password: hashedPassword,
         email: decodedData.email,
@@ -37,7 +37,7 @@ export const externalSignin = async (req, res) => {
 
       res.status(200).json({
         user: { name: user.name, email: user.email, profile: user.profile },
-        token: req.body,
+        token: credential,
       });
     } else {
       res.status(200).json({
@@ -46,11 +46,12 @@ export const externalSignin = async (req, res) => {
           email: existingUser.email,
           profile: existingUser.profile,
         },
-        token: req.body,
+        token: credential,
       });
     }
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong." });
+    // res.status(500).json({ message: "Something went wrong." });
+    res.status(500).json(error);
   }
 };
 
