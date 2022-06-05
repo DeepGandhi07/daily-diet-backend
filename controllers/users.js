@@ -1,15 +1,12 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
-import UserModel from "../models/userModel.js";
-import dotenv from "dotenv";
+import User from "../models/userModel.js";
 import { v4 as uuidv4 } from "uuid";
-
-dotenv.config();
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await UserModel.find();
+    const users = await User.find();
 
     res.status(200).json(users);
   } catch (error) {
@@ -22,11 +19,11 @@ export const externalSignin = async (req, res) => {
     const { credential } = req.body;
     const decodedData = jwt.decode(credential);
 
-    const existingUser = await UserModel.findOne({ email: decodedData.email });
+    const existingUser = await User.findOne({ email: decodedData.email });
     if (!existingUser) {
       const hashedPassword = await bcrypt.hash(uuidv4(), 12);
 
-      const user = await UserModel.create({
+      const user = await User.create({
         name: decodedData.name,
         password: hashedPassword,
         email: decodedData.email,
@@ -49,7 +46,7 @@ export const externalSignin = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong." });
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -57,9 +54,9 @@ export const signin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const existingUser = await UserModel.findOne({ email });
+    const existingUser = await User.findOne({ email });
     if (!existingUser)
-      return res.status(404).json({ message: "User not found." });
+      return res.status(404).json({ message: "User not found" });
 
     const isPasswordCorect = await bcrypt.compare(
       password,
@@ -67,7 +64,7 @@ export const signin = async (req, res) => {
     );
 
     if (!isPasswordCorect)
-      res.status(400).json({ message: "Invalid password." });
+      res.status(400).json({ message: "Invalid password" });
 
     const token = jwt.sign(
       { id: existingUser._id, email: existingUser.email },
@@ -84,7 +81,7 @@ export const signin = async (req, res) => {
       token,
     });
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong." });
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -92,16 +89,16 @@ export const signup = async (req, res) => {
   const { username, email, password, confirmpassword } = req.body;
 
   try {
-    const existingUser = await UserModel.findOne({ email });
+    const existingUser = await User.findOne({ email });
     if (existingUser)
-      return res.status(400).json({ message: "User already exists." });
+      return res.status(400).json({ message: "User already exists" });
 
     if (password !== confirmpassword)
-      return res.status(400).json({ message: "Passwords don't match." });
+      return res.status(400).json({ message: "Passwords don't match" });
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    const user = await UserModel.create({
+    const user = await User.create({
       name: username,
       password: hashedPassword,
       email,
@@ -112,7 +109,9 @@ export const signup = async (req, res) => {
     const token = jwt.sign(
       { id: user._id, email: user.email },
       process.env.SECRET,
-      { expiresIn: "1h" }
+      {
+        expiresIn: "1h",
+      }
     );
 
     res.status(200).json({
@@ -120,7 +119,7 @@ export const signup = async (req, res) => {
       token,
     });
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong." });
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -129,7 +128,7 @@ export const updateProfile = async (req, res) => {
 
   if (req.userId.includes("@")) {
     try {
-      const updatedUser = await UserModel.findOneAndUpdate(
+      const updatedUser = await User.findOneAndUpdate(
         { email: req.userId },
         { profile },
         {
@@ -143,10 +142,10 @@ export const updateProfile = async (req, res) => {
     }
   } else {
     if (!mongoose.Types.ObjectId.isValid(req.userId))
-      return res.status(404).send("User not found.");
+      return res.status(404).send("User not found");
 
     try {
-      const updatedUser = await UserModel.findOneAndUpdate(
+      const updatedUser = await User.findOneAndUpdate(
         { _id: req.userId },
         { profile },
         {

@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import DiaryModel from "../models/diaryModel.js";
+import Diary from "../models/diaryModel.js";
 
 export const getDiaries = async (req, res) => {
   try {
-    const diaries = await DiaryModel.find({ creator: req.userId });
+    const diaries = await Diary.find({ creator: req.userId });
 
     res.status(200).json(diaries);
   } catch (error) {
@@ -14,7 +14,7 @@ export const getDiaries = async (req, res) => {
 export const createDiary = async (req, res) => {
   const diary = req.body;
 
-  const newDiary = new DiaryModel({
+  const newDiary = new Diary({
     ...diary,
     creator: req.userId,
     createdAt: new Date().toISOString(),
@@ -35,9 +35,9 @@ export const updateDiary = async (req, res) => {
   const diary = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("Diary not found.");
+    return res.status(404).send("Diary not found");
 
-  const updatedDiary = await DiaryModel.findByIdAndUpdate(_id, diary, {
+  const updatedDiary = await Diary.findByIdAndUpdate(_id, diary, {
     new: true,
   });
   res.json(updatedDiary);
@@ -47,9 +47,9 @@ export const deleteDiary = async (req, res) => {
   const { id: _id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("Diary not found.");
+    return res.status(404).send("Diary not found");
 
-  await DiaryModel.findByIdAndRemove(_id);
+  await Diary.findByIdAndRemove(_id);
 
   res.json({ message: "Diary deleted" });
 };

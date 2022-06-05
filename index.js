@@ -1,20 +1,21 @@
 import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-import cors from "cors";
 import dotenv from "dotenv";
+import cors from "cors";
 
 import diaryRoutes from "./routes/diaries.js";
 import userRoutes from "./routes/users.js";
+import productRoutes from "./routes/products.js";
 
 const app = express();
-dotenv.config();
 
 app.use(bodyParser.json({ limit: "5mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "5mb", extended: true }));
 app.use(cors());
 app.use("/diaries", diaryRoutes);
 app.use("/user", userRoutes);
+app.use("/products", productRoutes);
 
 app.get("/", (req, res) => res.send("Daily Diet API"));
 
