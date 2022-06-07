@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 import diaryRoutes from "./routes/diaries.js";
+import mealRoutes from "./routes/meals.js";
 import userRoutes from "./routes/users.js";
 import productRoutes from "./routes/products.js";
 
