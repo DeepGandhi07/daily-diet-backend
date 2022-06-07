@@ -12,6 +12,10 @@ const productSchema = mongoose.Schema({
     type: String,
     default: "admin",
   },
+  private: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default mongoose.model("Product", productSchema);

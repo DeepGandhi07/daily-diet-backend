@@ -15,6 +15,7 @@ app.use(cors());
 app.use("/diaries", diaryRoutes);
 app.use("/user", userRoutes);
 app.use("/products", productRoutes);
+app.use("/meals", mealRoutes);
 
 app.get("/", (req, res) => res.send("Daily Diet API"));
 

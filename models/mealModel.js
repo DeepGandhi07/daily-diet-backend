@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-const diarySchema = mongoose.Schema({
+const mealSchema = mongoose.Schema({
   name: String,
   demand: { kcal: Number, protein: Number, carbs: Number, fat: Number },
-  meals: [Object],
+  products: [Object],
   nutrients: { kcal: Number, protein: Number, carbs: Number, fat: Number },
   demandCoverage: {
     kcal: { bgcolor: String, completed: Number, label: String },
@@ -25,4 +25,4 @@ const diarySchema = mongoose.Schema({
   },
 });
 
-export default mongoose.model("Diary", diarySchema);
+export default mongoose.model("Meal", mealSchema);
