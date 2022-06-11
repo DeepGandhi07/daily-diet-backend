@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const mealSchema = mongoose.Schema({
   name: String,
+  demand: { kcal: Number, protein: Number, carbs: Number, fat: Number },
   products: [Object],
   nutrients: { kcal: Number, protein: Number, carbs: Number, fat: Number },
   creator: {
