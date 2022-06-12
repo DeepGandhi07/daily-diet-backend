@@ -3,20 +3,7 @@ import Diary from "../models/diaryModel.js";
 
 export const getDiaries = async (req, res) => {
   try {
-    const diaries = await Diary.find({
-      creator: { $ne: req.userId },
-      $sample: { size: 20 },
-    });
-
-    res.status(200).json(diaries);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-};
-
-export const getUserDiaries = async (req, res) => {
-  try {
-    const diaries = await Diary.find({ creator: req.userId });
+    const diaries = await Diary.find();
 
     res.status(200).json(diaries);
   } catch (error) {

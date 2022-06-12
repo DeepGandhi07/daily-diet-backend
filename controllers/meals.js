@@ -3,20 +3,7 @@ import Meal from "../models/mealModel.js";
 
 export const getMeals = async (req, res) => {
   try {
-    const meals = await Meal.find({
-      creator: { $ne: req.userId },
-      $sample: { size: 20 },
-    });
-
-    res.status(200).json(meals);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-};
-
-export const getUserMeals = async (req, res) => {
-  try {
-    const meals = await Meal.find({ creator: req.userId });
+    const meals = await Meal.find();
 
     res.status(200).json(meals);
   } catch (error) {
