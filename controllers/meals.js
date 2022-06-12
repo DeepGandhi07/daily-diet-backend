@@ -37,9 +37,13 @@ export const updateMeal = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send("Meal not found");
 
-  const updatedMeal = await Meal.findByIdAndUpdate(_id, meal, {
-    new: true,
-  });
+  const updatedMeal = await Meal.findOneAndUpdate(
+    { _id, creator: req.userId },
+    meal,
+    {
+      new: true,
+    }
+  );
   res.json(updatedMeal);
 };
 
@@ -49,7 +53,7 @@ export const deleteMeal = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send("Meal not found");
 
-  await Meal.findByIdAndRemove(_id);
+  await Meal.findOneAndRemove({ _id, creator: req.userId });
 
   res.json({ message: "Meal deleted" });
 };

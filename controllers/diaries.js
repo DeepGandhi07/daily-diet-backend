@@ -37,9 +37,13 @@ export const updateDiary = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send("Diary not found");
 
-  const updatedDiary = await Diary.findByIdAndUpdate(_id, diary, {
-    new: true,
-  });
+  const updatedDiary = await Diary.findOneAndUpdate(
+    { _id, creator: req.userId },
+    diary,
+    {
+      new: true,
+    }
+  );
   res.json(updatedDiary);
 };
 
@@ -49,7 +53,7 @@ export const deleteDiary = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send("Diary not found");
 
-  await Diary.findByIdAndRemove(_id);
+  await Diary.findOneAndRemove({ _id, creator: req.userId });
 
   res.json({ message: "Diary deleted" });
 };

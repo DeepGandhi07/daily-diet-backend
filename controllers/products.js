@@ -36,9 +36,13 @@ export const updateProduct = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send("Product not found");
 
-  const updatedProduct = await Product.findByIdAndUpdate(_id, product, {
-    new: true,
-  });
+  const updatedProduct = await Product.findOneAndUpdate(
+    { _id, creator: req.userId },
+    product,
+    {
+      new: true,
+    }
+  );
   res.json(updatedProduct);
 };
 
@@ -48,7 +52,7 @@ export const deleteProduct = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send("Product not found");
 
-  await Product.findByIdAndRemove({ _id, creator: req.userId });
+  await Product.findOneAndRemove({ _id, creator: req.userId });
 
   res.json({ message: "Product deleted" });
 };
