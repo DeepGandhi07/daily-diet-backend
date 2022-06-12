@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const diarySchema = mongoose.Schema({
-  name: String,
-  demand: { kcal: Number, protein: Number, carbs: Number, fat: Number },
+  title: String,
+  id: String,
   meals: [Object],
   nutrients: { kcal: Number, protein: Number, carbs: Number, fat: Number },
   creator: {

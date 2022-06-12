@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getDiaries,
+  getUserDiaries,
   createDiary,
   updateDiary,
   deleteDiary,
@@ -9,7 +10,8 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/", auth, getDiaries);
+router.get("/", getDiaries);
+router.get("/", auth, getUserDiaries);
 router.post("/", auth, createDiary);
 router.patch("/:id", auth, updateDiary);
 router.delete("/:id", auth, deleteDiary);

@@ -3,7 +3,20 @@ import Product from "../models/productModel.js";
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find({
+      creator: { $ne: req.userId },
+      $sample: { size: 20 },
+    });
+
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getUserProducts = async (req, res) => {
+  try {
+    const products = await Product.find({ creator: req.userId });
 
     res.status(200).json(products);
   } catch (error) {
