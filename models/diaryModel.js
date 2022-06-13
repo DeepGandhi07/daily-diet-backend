@@ -14,7 +14,7 @@ const diarySchema = mongoose.Schema({
     default: "",
   },
   createdAt: {
-    type: Date,
+    type: String,
     default: new Date().toLocaleDateString("en-GB"),
   },
   private: {

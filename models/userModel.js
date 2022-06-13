@@ -59,7 +59,7 @@ const userSchema = mongoose.Schema({
     },
   },
   createdAt: {
-    type: Date,
+    type: String,
     default: new Date().toLocaleDateString("en-GB"),
   },
 });

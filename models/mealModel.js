@@ -10,7 +10,7 @@ const mealSchema = mongoose.Schema({
     default: "",
   },
   createdAt: {
-    type: Date,
+    type: String,
     default: new Date().toLocaleDateString("en-GB"),
   },
   private: {
