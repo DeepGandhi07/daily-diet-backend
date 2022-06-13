@@ -7,7 +7,7 @@ const mealSchema = mongoose.Schema({
   nutrients: { kcal: Number, protein: Number, carbs: Number, fat: Number },
   creator: {
     type: String,
-    default: "admin",
+    default: "",
   },
   createdAt: {
     type: Date,

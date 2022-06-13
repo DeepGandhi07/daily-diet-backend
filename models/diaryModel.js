@@ -5,9 +5,13 @@ const diarySchema = mongoose.Schema({
   id: String,
   meals: [Object],
   nutrients: { kcal: Number, protein: Number, carbs: Number, fat: Number },
+  calorieAdjustment: {
+    type: Number,
+    default: 0,
+  },
   creator: {
     type: String,
-    default: "admin",
+    default: "",
   },
   createdAt: {
     type: Date,

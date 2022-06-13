@@ -8,7 +8,7 @@ const productSchema = mongoose.Schema({
   amount: Number,
   creator: {
     type: String,
-    default: "admin",
+    default: "",
   },
   createdAt: {
     type: Date,
