@@ -17,7 +17,7 @@ export const createDiary = async (req, res) => {
   const newDiary = new Diary({
     ...diary,
     creator: req.userId,
-    createdAt: new Date().toISOString(),
+    createdAt: new Date().toLocaleDateString("en-GB"),
   });
 
   try {
