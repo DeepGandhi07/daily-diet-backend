@@ -12,7 +12,7 @@ const productSchema = mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: new Date(),
+    default: new Date().toLocaleDateString("en-GB"),
   },
   private: {
     type: Boolean,
