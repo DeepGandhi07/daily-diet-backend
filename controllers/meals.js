@@ -17,7 +17,7 @@ export const createMeal = async (req, res) => {
   const newMeal = new Meal({
     ...meal,
     creator: req.userId,
-    createdAt: new Date().toISOString(),
+    createdAt: new Date().toLocaleDateString("en-GB"),
   });
 
   try {
