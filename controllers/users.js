@@ -159,3 +159,82 @@ export const updateProfile = async (req, res) => {
     }
   }
 };
+
+export const updateUserData = async (req, res) => {
+  const { username, email, oldPassword, newPassword, confirmNewPassword } =
+    req.body;
+
+  if (req.userId.includes("@")) {
+    try {
+      res.json(null);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  } else {
+    if (newPassword !== confirmNewPassword)
+      return res.status(400).json({ message: "Passwords don't match" });
+
+    if (!mongoose.Types.ObjectId.isValid(req.userId))
+      return res.status(404).send("User not found");
+
+    const existingUser = await User.findOne({ email });
+
+    const isPasswordCorect = await bcrypt.compare(
+      oldPassword,
+      existingUser.password
+    );
+
+    if (!isPasswordCorect)
+      res.status(400).json({ message: "Invalid password" });
+
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: req.userId },
+        { name: username, email, password: hashedPassword },
+        {
+          new: true,
+        }
+      ).exec();
+
+      const token = jwt.sign(
+        { id: updatedUser._id, email: updatedUser.email },
+        process.env.SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
+
+      res.json({
+        user: { name: updatedUser.name, email: updatedUser.email },
+        token,
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  if (req.userId.includes("@")) {
+    try {
+      await User.findOneAndDelete({ email: req.userId }).exec();
+
+      res.json(null);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  } else {
+    if (!mongoose.Types.ObjectId.isValid(req.userId))
+      return res.status(404).send("User not found");
+
+    try {
+      await User.findOneAndDelete({ email: req.userId }).exec();
+
+      res.json(null);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+};
