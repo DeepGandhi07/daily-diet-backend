@@ -184,7 +184,7 @@ export const updateUserData = async (req, res) => {
 
       if (newPasswordCopy !== confirmNewPasswordCopy)
         // return res.status(400).json({ message: "Passwords don't match" });
-        throw new Error({ message: "Passwords don't match" });
+        throw new Error("Passwords don't match");
 
       if (!mongoose.Types.ObjectId.isValid(req.userId))
         return res.status(404).send("User not found");
