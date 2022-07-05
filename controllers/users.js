@@ -64,7 +64,7 @@ export const signin = async (req, res) => {
     );
 
     if (!isPasswordCorect)
-      res.status(400).json({ message: "Invalid password" });
+      return res.status(400).json({ message: "Invalid password" });
 
     const token = jwt.sign(
       { id: existingUser._id, email: existingUser.email },
@@ -196,7 +196,7 @@ export const updateUserData = async (req, res) => {
       );
 
       if (!isPasswordCorect)
-        res.status(400).json({ message: "Invalid password" });
+        return res.status(400).json({ message: "Invalid password" });
 
       hashedPassword = await bcrypt.hash(newPasswordCopy, 12);
     }
