@@ -9,7 +9,7 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/", auth, getProducts);
+router.get("/", getProducts);
 router.post("/", auth, createProduct);
 router.patch("/:id", auth, updateProduct);
 router.delete("/:id", auth, deleteProduct);

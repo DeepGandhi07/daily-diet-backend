@@ -9,7 +9,7 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/", auth, getMeals);
+router.get("/", getMeals);
 router.post("/", auth, createMeal);
 router.patch("/:id", auth, updateMeal);
 router.delete("/:id", auth, deleteMeal);
