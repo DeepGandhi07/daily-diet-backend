@@ -164,12 +164,6 @@ export const updateUserData = async (req, res) => {
   const { username, email, oldPassword, newPassword, confirmNewPassword } =
     req.body;
 
-  oldPassword = oldPassword ? oldPassword : existingUser.password;
-  newPassword = newPassword ? newPassword : existingUser.password;
-  confirmNewPassword = confirmNewPassword
-    ? confirmNewPassword
-    : existingUser.password;
-
   if (req.userId.includes("@")) {
     try {
       res.json(null);
@@ -177,23 +171,29 @@ export const updateUserData = async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   } else {
-    if (newPassword !== confirmNewPassword)
+    const existingUser = await User.findOne({ _id: req.userId });
+
+    const oldPasswordCopy = oldPassword ? oldPassword : existingUser.password;
+    const newPasswordCopy = newPassword ? newPassword : existingUser.password;
+    const confirmNewPasswordCopy = confirmNewPassword
+      ? confirmNewPassword
+      : existingUser.password;
+
+    if (newPasswordCopy !== confirmNewPasswordCopy)
       return res.status(400).json({ message: "Passwords don't match" });
 
     if (!mongoose.Types.ObjectId.isValid(req.userId))
       return res.status(404).send("User not found");
 
-    const existingUser = await User.findOne({ _id: req.userId });
-
     const isPasswordCorect = await bcrypt.compare(
-      oldPassword,
+      oldPasswordCopy,
       existingUser.password
     );
 
     if (!isPasswordCorect)
       res.status(400).json({ message: "Invalid password" });
 
-    const hashedPassword = await bcrypt.hash(newPassword, 12);
+    const hashedPassword = await bcrypt.hash(newPasswordCopy, 12);
 
     try {
       const updatedUser = await User.findOneAndUpdate(
