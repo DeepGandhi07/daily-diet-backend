@@ -16,8 +16,8 @@ router.get("/", auth, getUsers);
 router.post("/signin", signin);
 router.post("/signup", signup);
 router.post("/externalsignin", externalSignin);
-router.patch("/:id", auth, updateProfile);
-router.patch("/:id", auth, updateUserData);
+router.patch("/profile/:id", auth, updateProfile);
+router.patch("/userData/:id", auth, updateUserData);
 router.delete("/:id", auth, deleteUser);
 
 export default router;

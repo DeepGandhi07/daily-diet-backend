@@ -183,7 +183,7 @@ export const updateUserData = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.userId))
       return res.status(404).send("User not found");
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ _id: req.userId });
 
     const isPasswordCorect = await bcrypt.compare(
       oldPassword,
