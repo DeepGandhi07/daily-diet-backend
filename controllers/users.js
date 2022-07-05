@@ -237,7 +237,7 @@ export const deleteUser = async (req, res) => {
     try {
       await User.findOneAndDelete({ email: req.userId }).exec();
 
-      res.json(null);
+      res.status(200).json({ user: null });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -248,7 +248,7 @@ export const deleteUser = async (req, res) => {
 
       await User.findOneAndDelete({ email: req.userId }).exec();
 
-      res.json(null);
+      res.status(200).json({ user: null });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
