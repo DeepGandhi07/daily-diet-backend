@@ -173,6 +173,7 @@ export const updateUserData = async (req, res) => {
   } else {
     const existingUser = await User.findOne({ _id: req.userId });
 
+    const emailCopy = email ? email : existingUser.email;
     const oldPasswordCopy = oldPassword ? oldPassword : existingUser.password;
     const newPasswordCopy = newPassword ? newPassword : existingUser.password;
     const confirmNewPasswordCopy = confirmNewPassword
@@ -198,7 +199,7 @@ export const updateUserData = async (req, res) => {
     try {
       const updatedUser = await User.findOneAndUpdate(
         { _id: req.userId },
-        { name: username, email, password: hashedPassword },
+        { name: username, email: emailCopy, password: hashedPassword },
         {
           new: true,
         }
