@@ -235,7 +235,7 @@ export const updateUserData = async (req, res) => {
 export const deleteUser = async (req, res) => {
   if (req.userId.includes("@")) {
     try {
-      await User.findOneAndDelete({ email: req.userId }).exec();
+      await User.findOneAndDelete({ _id: req.userId }).exec();
 
       res.status(200).json({ user: null });
     } catch (error) {
@@ -246,7 +246,7 @@ export const deleteUser = async (req, res) => {
       if (!mongoose.Types.ObjectId.isValid(req.userId))
         return res.status(404).send("User not found");
 
-      await User.findOneAndDelete({ email: req.userId }).exec();
+      await User.findOneAndDelete({ _id: req.userId }).exec();
 
       res.status(200).json({ user: null });
     } catch (error) {
