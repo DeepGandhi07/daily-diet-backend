@@ -174,11 +174,12 @@ export const updateUserData = async (req, res) => {
     const existingUser = await User.findOne({ _id: req.userId });
 
     const emailCopy = email ? email : existingUser.email;
-    const oldPasswordCopy = oldPassword ? oldPassword : existingUser.password;
-    const newPasswordCopy = newPassword ? newPassword : existingUser.password;
+    const userNameCopy = username ? username : existingUser.name;
+    const oldPasswordCopy = oldPassword ? oldPassword : null;
+    const newPasswordCopy = newPassword ? newPassword : null;
     const confirmNewPasswordCopy = confirmNewPassword
       ? confirmNewPassword
-      : existingUser.password;
+      : null;
 
     if (newPasswordCopy !== confirmNewPasswordCopy)
       return res.status(400).json({ message: "Passwords don't match" });
@@ -186,20 +187,28 @@ export const updateUserData = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.userId))
       return res.status(404).send("User not found");
 
-    const isPasswordCorect = await bcrypt.compare(
-      oldPasswordCopy,
-      existingUser.password
-    );
+    let hashedPassword;
 
-    if (!isPasswordCorect)
-      res.status(400).json({ message: "Invalid password" });
+    if (oldPasswordCopy && newPasswordCopy && confirmNewPasswordCopy) {
+      const isPasswordCorect = await bcrypt.compare(
+        oldPasswordCopy,
+        existingUser.password
+      );
 
-    const hashedPassword = await bcrypt.hash(newPasswordCopy, 12);
+      if (!isPasswordCorect)
+        res.status(400).json({ message: "Invalid password" });
+
+      hashedPassword = await bcrypt.hash(newPasswordCopy, 12);
+    }
+
+    const dataToUpdate = hashedPassword
+      ? { name: userNameCopy, email: emailCopy, password: hashedPassword }
+      : { name: userNameCopy, email: emailCopy };
 
     try {
       const updatedUser = await User.findOneAndUpdate(
         { _id: req.userId },
-        { name: username, email: emailCopy, password: hashedPassword },
+        dataToUpdate,
         {
           new: true,
         }
