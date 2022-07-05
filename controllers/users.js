@@ -164,6 +164,12 @@ export const updateUserData = async (req, res) => {
   const { username, email, oldPassword, newPassword, confirmNewPassword } =
     req.body;
 
+  oldPassword = oldPassword ? oldPassword : existingUser.password;
+  newPassword = newPassword ? newPassword : existingUser.password;
+  confirmNewPassword = confirmNewPassword
+    ? confirmNewPassword
+    : existingUser.password;
+
   if (req.userId.includes("@")) {
     try {
       res.json(null);
