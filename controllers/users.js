@@ -183,8 +183,7 @@ export const updateUserData = async (req, res) => {
         : null;
 
       if (newPasswordCopy !== confirmNewPasswordCopy)
-        // return res.status(400).json({ message: "Passwords don't match" });
-        throw "Passwords don't match";
+        return res.status(400).json({ message: "Passwords don't match" });
 
       if (!mongoose.Types.ObjectId.isValid(req.userId))
         return res.status(404).send("User not found");
@@ -229,7 +228,6 @@ export const updateUserData = async (req, res) => {
       });
     } catch (error) {
       res.status(500).json({ message: error.message });
-      throw "Passwords don't match";
     }
   }
 };
