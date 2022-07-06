@@ -235,9 +235,9 @@ export const updateUserData = async (req, res) => {
 export const deleteUser = async (req, res) => {
   if (req.userId.includes("@")) {
     try {
-      await User.findOneAndDelete({ _id: req.userId }).exec();
+      await User.findOneAndDelete({ email: req.userId }).exec();
 
-      res.status(200).json({ user: null });
+      res.json({ user: null });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -248,7 +248,7 @@ export const deleteUser = async (req, res) => {
 
       await User.findOneAndDelete({ _id: req.userId }).exec();
 
-      res.status(200).json({ user: null });
+      res.json({ user: null });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
