@@ -62,6 +62,10 @@ const userSchema = mongoose.Schema({
     type: String,
     default: new Date().toLocaleDateString("en-GB"),
   },
+  external: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default mongoose.model("User", userSchema);

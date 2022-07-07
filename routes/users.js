@@ -7,6 +7,7 @@ import {
   updateProfile,
   updateUserData,
   deleteUser,
+  resetPassword,
 } from "../controllers/users.js";
 import auth from "../middleware/auth.js";
 
@@ -19,5 +20,6 @@ router.post("/externalsignin", externalSignin);
 router.patch("/profile/:id", auth, updateProfile);
 router.patch("/userData/:id", auth, updateUserData);
 router.delete("/:id", auth, deleteUser);
+router.post("/resetPassword", resetPassword);
 
 export default router;

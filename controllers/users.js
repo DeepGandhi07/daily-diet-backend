@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import User from "../models/userModel.js";
 import { v4 as uuidv4 } from "uuid";
+import { transporter } from "../services/mailService.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -32,7 +33,12 @@ export const externalSignin = async (req, res) => {
       await user.save();
 
       res.status(200).json({
-        user: { name: user.name, email: user.email, profile: user.profile },
+        user: {
+          name: user.name,
+          email: user.email,
+          profile: user.profile,
+          external: true,
+        },
         token: credential,
       });
     } else {
@@ -252,5 +258,24 @@ export const deleteUser = async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const existingUser = await User.findOne({ email });
+    if (!existingUser || existingUser.external)
+      return res.status(404).send("User not found");
+
+    await transporter.sendMail({
+      from: "daily.diet.notifications@gmail.com",
+      to: email,
+      subject: "Reset Password test :)",
+      text: "This is a test for the password reset feature. Coming soon... stay tuned!",
+    });
+    res.json({ message: "Password reset link sent" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
