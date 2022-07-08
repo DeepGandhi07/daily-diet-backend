@@ -1,6 +1,5 @@
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
-import website_logo from "../assets/website_logo.png";
 
 const OAuth2 = google.auth.OAuth2;
 const OAuth2Client = new OAuth2(
