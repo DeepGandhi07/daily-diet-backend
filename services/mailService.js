@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
+import website_logo from "../assets/website_logo.png";
 
 const OAuth2 = google.auth.OAuth2;
 const OAuth2Client = new OAuth2(
@@ -16,6 +17,28 @@ const accessToken = new Promise((resolve, reject) => {
     resolve(token);
   });
 });
+
+export const mailTemplate = (link) => `
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8" />
+    </head>
+    <body>
+      <header>
+        <img src={${website_logo}} width="40px" height="40px" />
+        <h1>Daily Diet</h1>
+      </header>
+      <main>
+      <article>
+        <h2>Password reset</h2>
+        <br />
+        <a href={${link}}>Reset password</a>
+      </article>
+      </main>
+      <footer>Daily Diet</footer>
+    </body>
+  </html>`;
 
 export const transporter = nodemailer.createTransport({
   service: "gmail",

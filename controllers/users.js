@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import User from "../models/userModel.js";
 import { v4 as uuidv4 } from "uuid";
 import { transporter } from "../services/mailService.js";
+import { mailTemplate } from "../services/mailService.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -268,12 +269,25 @@ export const resetPassword = async (req, res) => {
     if (!existingUser || existingUser.external)
       return res.status(404).send("User not found");
 
+    const USER_SECRET = process.env.SECRET + existingUser.password;
+
+    const token = jwt.sign(
+      { id: existingUser._id, email: existingUser.email },
+      USER_SECRET,
+      {
+        expiresIn: "15m",
+      }
+    );
+
+    const link = `http://localhost:3000/passwordreset/${token}`;
+
     await transporter.sendMail({
       from: "daily.diet.notifications@gmail.com",
       to: email,
       subject: "Reset Password test :)",
-      text: "This is a test for the password reset feature. Coming soon... stay tuned!",
+      html: mailTemplate(link),
     });
+
     res.json({ message: "Password reset link sent" });
   } catch (error) {
     res.status(500).json({ message: error.message });
