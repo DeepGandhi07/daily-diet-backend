@@ -8,6 +8,7 @@ import {
   updateUserData,
   deleteUser,
   resetPassword,
+  changePassword,
 } from "../controllers/users.js";
 import auth from "../middleware/auth.js";
 
@@ -21,5 +22,6 @@ router.patch("/profile/:id", auth, updateProfile);
 router.patch("/userData/:id", auth, updateUserData);
 router.delete("/:id", auth, deleteUser);
 router.post("/resetPassword", resetPassword);
+router.patch("/changePassword/:token", changePassword);
 
 export default router;

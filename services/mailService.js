@@ -17,7 +17,38 @@ const accessToken = new Promise((resolve, reject) => {
   });
 });
 
-export const mailTemplate = (link, name, email) => `
+export const passwordChangeConfirmationMailTemplate = (link, name, email) => `
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <header>
+      <h1>Daily Diet</h1> 
+      <h2>Password reset</h2>
+    </header>
+    <main>
+    <article>
+      <br />
+      <p>Hello ${name},
+      <br /><br />
+      Your password for the Daily Diet account associated with ${email} has been successfully changed.
+      <br /><br /><br />
+      If you did not change your password, please let us know immediately by replying to this email.
+      <br /><br />
+      Yours,<br />
+      The Daily Diet team
+      <br />
+      <hr />
+      </p>
+    </article>
+    </main>
+    <footer><a href=${link}>Daily Diet Homepage</a></footer>
+  </body>
+</html>`;
+
+export const passwordResetRequestMailTemplate = (link, name, email) => `
 <!DOCTYPE html>
 <html>
   <head>

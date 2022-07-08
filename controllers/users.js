@@ -3,7 +3,11 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import User from "../models/userModel.js";
 import { v4 as uuidv4 } from "uuid";
-import { transporter, mailTemplate } from "../services/mailService.js";
+import {
+  transporter,
+  passwordResetRequestMailTemplate,
+  passwordChangeConfirmationMailTemplate,
+} from "../services/mailService.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -268,7 +272,7 @@ export const resetPassword = async (req, res) => {
     if (!existingUser || existingUser.external)
       return res.status(404).send("User not found");
 
-    const USER_SECRET = process.env.SECRET + existingUser.password;
+    const USER_SECRET = process.env.SECRET;
 
     const token = jwt.sign(
       { id: existingUser._id, email: existingUser.email },
@@ -278,16 +282,63 @@ export const resetPassword = async (req, res) => {
       }
     );
 
-    const link = `https://daily-diet.pages.dev/passwordreset/${token}`;
+    const link = `https://daily-diet.pages.dev/passwordreset/#access_token=${token}`;
 
     await transporter.sendMail({
       from: "daily.diet.notifications@gmail.com",
       to: email,
       subject: "Daily Diet - Password Reset Request",
-      html: mailTemplate(link, existingUser.name, existingUser.email),
+      html: passwordResetRequestMailTemplate(
+        link,
+        existingUser.name,
+        existingUser.email
+      ),
     });
 
     res.json({ message: "Password reset link sent" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const changePassword = async (req, res) => {
+  const { password, confirmpassword } = req.body;
+  const { token } = req.params;
+
+  if (password !== confirmpassword)
+    return res.status(400).json({ message: "Passwords don't match" });
+
+  const { email } = jwt.verify(token, process.env.SECRET);
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+  try {
+    const existingUser = await User.findOne({ email });
+    if (!existingUser || existingUser.external)
+      return res.status(404).send("User not found");
+
+    await User.findOneAndUpdate(
+      { _id: existingUser._id },
+      { password: hashedPassword },
+      {
+        new: true,
+      }
+    ).exec();
+
+    const link = `https://daily-diet.pages.dev/`;
+
+    await transporter.sendMail({
+      from: "daily.diet.notifications@gmail.com",
+      to: email,
+      subject: "Daily Diet - Password Successfully Changed",
+      html: passwordChangeConfirmationMailTemplate(
+        link,
+        existingUser.name,
+        existingUser.email
+      ),
+    });
+
+    res.json({ message: "Password successfully changed" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
