@@ -42,6 +42,7 @@ export const externalSignin = async (req, res) => {
           email: user.email,
           profile: user.profile,
           external: true,
+          newsletter: user.newsletter,
         },
         token: credential,
       });
@@ -51,6 +52,7 @@ export const externalSignin = async (req, res) => {
           name: existingUser.name,
           email: existingUser.email,
           profile: existingUser.profile,
+          newsletter: existingUser.newsletter,
         },
         token: credential,
       });
@@ -87,6 +89,7 @@ export const signin = async (req, res) => {
         name: existingUser.name,
         email: existingUser.email,
         profile: existingUser.profile,
+        newsletter: existingUser.newsletter,
       },
       token,
     });
@@ -125,7 +128,12 @@ export const signup = async (req, res) => {
     );
 
     res.status(200).json({
-      user: { name: user.name, email: user.email, profile: user.profile },
+      user: {
+        name: user.name,
+        email: user.email,
+        profile: user.profile,
+        newsletter: user.newsletter,
+      },
       token,
     });
   } catch (error) {
