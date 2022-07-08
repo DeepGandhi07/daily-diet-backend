@@ -24,6 +24,6 @@ router.patch("/userData/:id", auth, updateUserData);
 router.delete("/:id", auth, deleteUser);
 router.post("/resetPassword", resetPassword);
 router.patch("/changePassword/:token", changePassword);
-router.post("/changeNewsletterStatus/:id", auth, changeNewsletterStatus);
+router.patch("/changeNewsletterStatus/:id", auth, changeNewsletterStatus);
 
 export default router;
