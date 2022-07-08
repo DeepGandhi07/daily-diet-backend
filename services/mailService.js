@@ -28,8 +28,8 @@ export const mailTemplate = (link, name, email) => `
         border: none;
         border-radius: 10px 0;
         color: white;
-        font-size: 0.8rem;
-        padding: 0.6rem;
+        font-size: 1rem;
+        padding: 0.8rem;
         text-align: center;
         text-decoration: none;
         display: inline-block;
@@ -41,7 +41,6 @@ export const mailTemplate = (link, name, email) => `
   <body>
     <header>
       <h1>Daily Diet</h1> 
-      <br />
       <h2>Password reset</h2>
     </header>
     <main>
@@ -53,23 +52,22 @@ export const mailTemplate = (link, name, email) => `
       <br /><br />
       No changes have been made to your account yet.
       <br /><br />
-      You can reset your password by clicking the link below:*
+      You can reset your password by clicking the link below: *
       <br /><br />
       <a href=${link} class="button">Reset password</a>
       <br /><br />
-      or copy the link to the browser:*
+      or copy the link to the browser: *
       <br /><br />
       <a href=${link} >${link}</a>
       <br /><br /><br />
       If you did not request a new password, please let us know immediately by replying to this email.
       <br /><br />
-      *The password reset link is only valid for the next 15 minutes.
+      * The password reset link is only valid for the next 15 minutes.
       <br /><br />
       Yours,<br />
       The Daily Diet team
       <br />
       <hr />
-      <br />
       </p>
     </article>
     </main>
