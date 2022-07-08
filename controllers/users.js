@@ -251,7 +251,7 @@ export const updateUserData = async (req, res) => {
 };
 
 export const changeNewsletterStatus = async (req, res) => {
-  const { status } = req.body;
+  const status = req.body;
 
   if (req.userId.includes("@")) {
     try {
@@ -262,6 +262,23 @@ export const changeNewsletterStatus = async (req, res) => {
           new: true,
         }
       ).exec();
+
+      if (status) {
+        const USER_SECRET = process.env.SECRET;
+
+        const token = jwt.sign({ email: updatedUser.email }, USER_SECRET, {
+          expiresIn: "999y",
+        });
+
+        const link = `https://daily-diet.pages.dev/unsubscribe/#access_token=${token}`;
+
+        await transporter.sendMail({
+          from: "daily.diet.notifications@gmail.com",
+          to: email,
+          subject: "Daily Diet - Newsletter Subscribtion",
+          html: newsletterSubscribeMailTemplate(link, existingUser.name),
+        });
+      }
 
       res.json({
         newsletter: updatedUser.newsletter,
@@ -284,6 +301,23 @@ export const changeNewsletterStatus = async (req, res) => {
           new: true,
         }
       ).exec();
+
+      if (status) {
+        const USER_SECRET = process.env.SECRET;
+
+        const token = jwt.sign({ email: updatedUser.email }, USER_SECRET, {
+          expiresIn: "999y",
+        });
+
+        const link = `https://daily-diet.pages.dev/unsubscribe/#access_token=${token}`;
+
+        await transporter.sendMail({
+          from: "daily.diet.notifications@gmail.com",
+          to: email,
+          subject: "Daily Diet - Newsletter Subscribtion",
+          html: newsletterSubscribeMailTemplate(link, existingUser.name),
+        });
+      }
 
       res.json({
         newsletter: updatedUser.newsletter,
@@ -363,21 +397,25 @@ export const changePassword = async (req, res) => {
   if (password !== confirmpassword)
     return res.status(400).json({ message: "Passwords don't match" });
 
-  const { id, exp } = jwt.verify(token, process.env.SECRET);
+  const decodedToken = jwt.verify(token, process.env.SECRET);
 
-  if (exp * 1000 < new Date().getTime()) {
+  if (!decodedToken) {
+    return res.status(400).send("Access denied");
+  }
+
+  if (decodedToken.exp * 1000 < new Date().getTime()) {
     return res.status(400).json({ message: "Password reset link has expired" });
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
   try {
-    const existingUser = await User.findOne({ _id: id });
+    const existingUser = await User.findOne({ _id: decodedToken.id });
     if (!existingUser || existingUser.external)
       return res.status(404).send("User not found");
 
     await User.findOneAndUpdate(
-      { _id: id },
+      { _id: decodedToken.id },
       { password: hashedPassword },
       {
         new: true,
@@ -398,6 +436,34 @@ export const changePassword = async (req, res) => {
     });
 
     res.json({ message: "Password successfully changed" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const fakeUserNewsletterUnsubscribe = async (req, res) => {
+  const { token } = req.params;
+
+  const decodedToken = jwt.verify(token, process.env.SECRET);
+
+  if (!decodedToken) {
+    return res.status(400).send("Access denied");
+  }
+
+  try {
+    const existingUser = await User.findOne({ email: decodedToken.email });
+    if (!existingUser || existingUser.external)
+      return res.status(404).send("User not found");
+
+    await User.findOneAndUpdate(
+      { email: existingUser.email },
+      { newsletter: false },
+      {
+        new: true,
+      }
+    ).exec();
+
+    res.json({ message: "Successfully unsubscribed" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

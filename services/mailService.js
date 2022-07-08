@@ -106,6 +106,41 @@ export const passwordResetRequestMailTemplate = (link, name, email) => `
   </body>
 </html>`;
 
+export const newsletterSubscribeMailTemplate = (link, name) => `
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <header>
+      <h1>Daily Diet</h1> 
+      <h2>Newsletter Subscription</h2>
+    </header>
+    <main>
+    <article>
+      <br />
+      <p>Hello ${name},
+      <br /><br />
+      Thank you for subscribing to the newsletter.
+      <br /><br />
+      Like you, we don't like spam, so we'll only keep you posted on the most important events.
+      <br /><br />
+      You can unsubscribe at any time in your account settings, by clicking on the link below or replying to this email.
+      <br /><br /><br />
+      If you did not subscribe, please let us know immediately.
+      <br /><br />
+      Yours,<br />
+      The Daily Diet team
+      <br />
+      <hr />
+      </p>
+    </article>
+    </main>
+    <footer><a href=${link}>Unsubscribe</a><br /><br /><a href="https://daily-diet.pages.dev">Daily Diet Homepage</a></footer>
+  </body>
+</html>`;
+
 export const transporter = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
