@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import User from "../models/userModel.js";
 import { v4 as uuidv4 } from "uuid";
 import { transporter, emailTemplate } from "../services/mailService.js";
-import logo from "../assets/website_logo.png";
 
 export const getUsers = async (req, res) => {
   try {
@@ -280,6 +279,7 @@ export const resetPassword = async (req, res) => {
     );
 
     const link = `http://localhost:3000/passwordreset/${token}`;
+    const logo = "../assets/website_logo.png";
 
     await transporter.sendMail({
       from: "daily.diet.notifications@gmail.com",
