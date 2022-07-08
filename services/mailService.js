@@ -42,7 +42,7 @@ export const mailTemplate = (link, image, name, email) => `
   </head>
   <body>
     <header>
-      <img src="${image}" alt="two leaves - daily diet website logo" width="40px" height="40px" />
+      <img src=${image} alt="two leaves - daily diet website logo" width="40px" height="40px" />
       <h1>Daily Diet</h1>
     </header>
     <main>

@@ -279,13 +279,13 @@ export const resetPassword = async (req, res) => {
     );
 
     const link = `http://localhost:3000/passwordreset/${token}`;
-    const logo = "../assets/website_logo.png";
+    const image = "../assets/website_logo.png";
 
     await transporter.sendMail({
       from: "daily.diet.notifications@gmail.com",
       to: email,
       subject: "Daily Diet - Password Reset Request",
-      html: emailTemplate(link, logo, existingUser.name, existingUser.email),
+      html: emailTemplate(link, image, existingUser.name, existingUser.email),
     });
 
     res.json({ message: "Password reset link sent" });
