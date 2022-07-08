@@ -242,6 +242,53 @@ export const updateUserData = async (req, res) => {
   }
 };
 
+export const changeNewsletterStatus = async (req, res) => {
+  const { status } = req.body;
+
+  if (req.userId.includes("@")) {
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        { email: req.userId },
+        { newsletter: status },
+        {
+          new: true,
+        }
+      ).exec();
+
+      res.json({
+        newsletter: updatedUser.newsletter,
+        message: updatedUser.newsletter
+          ? "Successfully subscribed"
+          : "Successfully unsubscribed",
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  } else {
+    if (!mongoose.Types.ObjectId.isValid(req.userId))
+      return res.status(404).send("User not found");
+
+    try {
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: req.userId },
+        { newsletter: status },
+        {
+          new: true,
+        }
+      ).exec();
+
+      res.json({
+        newsletter: updatedUser.newsletter,
+        message: updatedUser.newsletter
+          ? "Successfully subscribed"
+          : "Successfully unsubscribed",
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+};
+
 export const deleteUser = async (req, res) => {
   if (req.userId.includes("@")) {
     try {

@@ -66,6 +66,10 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  newsletter: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default mongoose.model("User", userSchema);
