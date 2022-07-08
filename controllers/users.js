@@ -278,7 +278,7 @@ export const resetPassword = async (req, res) => {
       }
     );
 
-    const link = `http://localhost:3000/passwordreset/${token}`;
+    const link = `https://daily-diet.pages.dev/passwordreset/${token}`;
 
     await transporter.sendMail({
       from: "daily.diet.notifications@gmail.com",
