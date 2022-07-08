@@ -3,7 +3,8 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import User from "../models/userModel.js";
 import { v4 as uuidv4 } from "uuid";
-import { transporter } from "../services/mailService.js";
+import { transporter, emailTemplate } from "../services/mailService.js";
+import logo from "../assets/website_logo.png";
 
 export const getUsers = async (req, res) => {
   try {
@@ -283,27 +284,8 @@ export const resetPassword = async (req, res) => {
     await transporter.sendMail({
       from: "daily.diet.notifications@gmail.com",
       to: email,
-      subject: "Reset Password test :)",
-      html: `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8" />
-        </head>
-        <body>
-          <header>
-            <h1>Daily Diet</h1>
-          </header>
-          <main>
-          <article>
-            <h2>Password reset</h2>
-            <br />
-            <a href={${link}}>Reset password</a>
-          </article>
-          </main>
-          <footer>Daily Diet</footer>
-        </body>
-      </html>`,
+      subject: "Daily Diet - Password Reset Request",
+      html: emailTemplate(link, logo, existingUser.name, existingUser.email),
     });
 
     res.json({ message: "Password reset link sent" });
