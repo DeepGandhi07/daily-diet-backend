@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import User from "../models/userModel.js";
 import { v4 as uuidv4 } from "uuid";
-import { transporter, emailTemplate } from "../services/mailService.js";
+import { transporter, mailTemplate } from "../services/mailService.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -284,7 +284,7 @@ export const resetPassword = async (req, res) => {
       from: "daily.diet.notifications@gmail.com",
       to: email,
       subject: "Daily Diet - Password Reset Request",
-      html: emailTemplate(link, existingUser.name, existingUser.email),
+      html: mailTemplate(link, existingUser.name, existingUser.email),
     });
 
     res.json({ message: "Password reset link sent" });
