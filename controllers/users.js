@@ -308,17 +308,21 @@ export const changePassword = async (req, res) => {
   if (password !== confirmpassword)
     return res.status(400).json({ message: "Passwords don't match" });
 
-  const { email } = jwt.verify(token, process.env.SECRET);
+  const { id, exp } = jwt.verify(token, process.env.SECRET);
+
+  if (exp * 1000 < new Date().getTime()) {
+    return res.status(400).json({ message: "Password reset link has expired" });
+  }
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ _id: id });
     if (!existingUser || existingUser.external)
       return res.status(404).send("User not found");
 
     await User.findOneAndUpdate(
-      { _id: existingUser._id },
+      { _id: id },
       { password: hashedPassword },
       {
         new: true,
