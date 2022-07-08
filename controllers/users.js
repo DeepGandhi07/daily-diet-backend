@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import User from "../models/userModel.js";
 import { v4 as uuidv4 } from "uuid";
 import { transporter } from "../services/mailService.js";
-import { mailTemplate } from "../services/mailService.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -285,7 +284,26 @@ export const resetPassword = async (req, res) => {
       from: "daily.diet.notifications@gmail.com",
       to: email,
       subject: "Reset Password test :)",
-      html: mailTemplate(link),
+      html: `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8" />
+        </head>
+        <body>
+          <header>
+            <h1>Daily Diet</h1>
+          </header>
+          <main>
+          <article>
+            <h2>Password reset</h2>
+            <br />
+            <a href={${link}}>Reset password</a>
+          </article>
+          </main>
+          <footer>Daily Diet</footer>
+        </body>
+      </html>`,
     });
 
     res.json({ message: "Password reset link sent" });
