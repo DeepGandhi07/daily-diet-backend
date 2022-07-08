@@ -28,12 +28,11 @@ export const mailTemplate = (link, name, email) => `
         border: none;
         border-radius: 10px 0;
         color: white;
-        font-size: 1.2rem;
-        padding: 0.8rem;
+        font-size: 0.8rem;
+        padding: 0.6rem;
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 20px;
         margin: 0.5rem;
         cursor: pointer;
             }
@@ -48,24 +47,25 @@ export const mailTemplate = (link, name, email) => `
       <h2>Password reset</h2>
       <br />
       <p>Hello ${name},
-
+      <br /><br />
       Somebody requested a new password for the Daily Diet account associated with ${email}.
-      
+      <br /><br />
       No changes have been made to your account yet.
-      
+      <br /><br />
       You can reset your password by clicking the link below:
-
+      <br /><br />
       <a href=${link} class="button">Reset password</a>
-      
+      <br /><br />
       If you did not request a new password, please let us know immediately by replying to this email.
-      
-      Yours,
+      <br /><br />
+      Yours,<br />
       The Daily Diet team
-      
+      <br />
+      <br />
       </p>
     </article>
     </main>
-    <footer><a href="https://daily-diet.pages.dev" class="button">Daily Diet Homepage</a></footer>
+    <footer><a href="https://daily-diet.pages.dev">Daily Diet Homepage</a></footer>
   </body>
 </html>`;
 
