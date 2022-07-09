@@ -251,7 +251,7 @@ export const updateUserData = async (req, res) => {
 };
 
 export const changeNewsletterStatus = async (req, res) => {
-  const { status } = req.body;
+  const status = req.body;
 
   if (req.userId.includes("@")) {
     try {
@@ -274,9 +274,9 @@ export const changeNewsletterStatus = async (req, res) => {
 
         await transporter.sendMail({
           from: "daily.diet.notifications@gmail.com",
-          to: email,
+          to: updatedUser.email,
           subject: "Daily Diet - Newsletter Subscribtion",
-          html: newsletterSubscribeMailTemplate(link, existingUser.name),
+          html: newsletterSubscribeMailTemplate(link, updatedUser.name),
         });
       }
 
@@ -313,9 +313,9 @@ export const changeNewsletterStatus = async (req, res) => {
 
         await transporter.sendMail({
           from: "daily.diet.notifications@gmail.com",
-          to: email,
+          to: updatedUser.email,
           subject: "Daily Diet - Newsletter Subscribtion",
-          html: newsletterSubscribeMailTemplate(link, existingUser.name),
+          html: newsletterSubscribeMailTemplate(link, updatedUser.name),
         });
       }
 
