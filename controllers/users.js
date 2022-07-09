@@ -251,7 +251,7 @@ export const updateUserData = async (req, res) => {
 };
 
 export const changeNewsletterStatus = async (req, res) => {
-  const status = req.body;
+  const { status } = req.body;
 
   if (req.userId.includes("@")) {
     try {
