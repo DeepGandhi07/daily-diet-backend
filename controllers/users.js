@@ -7,6 +7,7 @@ import {
   transporter,
   passwordResetRequestMailTemplate,
   passwordChangeConfirmationMailTemplate,
+  newsletterSubscribeMailTemplate,
 } from "../services/mailService.js";
 
 export const getUsers = async (req, res) => {
