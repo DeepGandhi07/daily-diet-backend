@@ -26,9 +26,6 @@ router.delete("/:id", auth, deleteUser);
 router.post("/resetPassword", resetPassword);
 router.patch("/changePassword/:token", changePassword);
 router.patch("/changeNewsletterStatus/:id", auth, changeNewsletterStatus);
-router.patch(
-  "/fakeUserNewsletterUnsubscribe/:token",
-  fakeUserNewsletterUnsubscribe
-);
+router.patch("/unsubscribe/:token", fakeUserNewsletterUnsubscribe);
 
 export default router;
