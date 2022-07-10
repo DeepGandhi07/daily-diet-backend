@@ -62,11 +62,19 @@ const userSchema = mongoose.Schema({
     type: String,
     default: new Date().toLocaleDateString("en-GB"),
   },
+  lastLogged: {
+    type: String,
+    default: new Date().toLocaleDateString("en-GB"),
+  },
   external: {
     type: Boolean,
     default: false,
   },
   newsletter: {
+    type: Boolean,
+    default: false,
+  },
+  admin: {
     type: Boolean,
     default: false,
   },
