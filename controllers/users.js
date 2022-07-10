@@ -443,6 +443,7 @@ export const changePassword = async (req, res) => {
 };
 
 export const fakeUserNewsletterUnsubscribe = async (req, res) => {
+  const { status } = req.body;
   const { token } = req.params;
 
   const decodedToken = jwt.verify(token, process.env.SECRET);
@@ -453,12 +454,11 @@ export const fakeUserNewsletterUnsubscribe = async (req, res) => {
 
   try {
     const existingUser = await User.findOne({ email: decodedToken.email });
-    if (!existingUser || existingUser.external)
-      return res.status(404).send("User not found");
+    if (!existingUser) return res.status(404).send("User not found");
 
     await User.findOneAndUpdate(
       { email: existingUser.email },
-      { newsletter: false },
+      { newsletter: status },
       {
         new: true,
       }
