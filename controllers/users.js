@@ -161,7 +161,7 @@ export const updateProfile = async (req, res) => {
     }
   } else {
     if (!mongoose.Types.ObjectId.isValid(req.userId))
-      return res.status(404).send("User not found");
+      return res.status(404).json({ message: "User not found" });
 
     try {
       const updatedUser = await User.findOneAndUpdate(
@@ -205,7 +205,7 @@ export const updateUserData = async (req, res) => {
         return res.status(400).json({ message: "Passwords don't match" });
 
       if (!mongoose.Types.ObjectId.isValid(req.userId))
-        return res.status(404).send("User not found");
+        return res.status(404).json({ message: "User not found" });
 
       let hashedPassword;
 
@@ -292,7 +292,7 @@ export const changeNewsletterStatus = async (req, res) => {
     }
   } else {
     if (!mongoose.Types.ObjectId.isValid(req.userId))
-      return res.status(404).send("User not found");
+      return res.status(404).json({ message: "User not found" });
 
     try {
       const updatedUser = await User.findOneAndUpdate(
@@ -344,7 +344,7 @@ export const deleteUser = async (req, res) => {
   } else {
     try {
       if (!mongoose.Types.ObjectId.isValid(req.userId))
-        return res.status(404).send("User not found");
+        return res.status(404).json({ message: "User not found" });
 
       await User.findOneAndDelete({ _id: req.userId }).exec();
 
@@ -360,7 +360,7 @@ export const resetPassword = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (!existingUser || existingUser.external)
-      return res.status(404).send("User not found");
+      return res.status(404).json({ message: "User not found" });
 
     const USER_SECRET = process.env.SECRET;
 
@@ -413,7 +413,7 @@ export const changePassword = async (req, res) => {
   try {
     const existingUser = await User.findOne({ _id: decodedToken.id });
     if (!existingUser || existingUser.external)
-      return res.status(404).send("User not found");
+      return res.status(404).json({ message: "User not found" });
 
     await User.findOneAndUpdate(
       { _id: decodedToken.id },
@@ -454,7 +454,8 @@ export const fakeUserNewsletterUnsubscribe = async (req, res) => {
 
   try {
     const existingUser = await User.findOne({ email: decodedToken.email });
-    if (!existingUser) return res.status(404).send("User not found");
+    if (!existingUser)
+      return res.status(404).json({ message: "User not found" });
 
     await User.findOneAndUpdate(
       { email: existingUser.email },
