@@ -274,7 +274,7 @@ export const changeNewsletterStatus = async (req, res) => {
         const link = `https://daily-diet.pages.dev/unsubscribe/#access_token=${token}`;
 
         await transporter.sendMail({
-          from: "daily.diet.notifications@gmail.com",
+          from: "daily.diet.team@gmail.com",
           to: updatedUser.email,
           subject: "Daily Diet - Newsletter Subscribtion",
           html: newsletterSubscribeMailTemplate(link, updatedUser.name),
@@ -313,7 +313,7 @@ export const changeNewsletterStatus = async (req, res) => {
         const link = `https://daily-diet.pages.dev/unsubscribe/#access_token=${token}`;
 
         await transporter.sendMail({
-          from: "daily.diet.notifications@gmail.com",
+          from: "daily.diet.team@gmail.com",
           to: updatedUser.email,
           subject: "Daily Diet - Newsletter Subscribtion",
           html: newsletterSubscribeMailTemplate(link, updatedUser.name),
@@ -375,7 +375,7 @@ export const resetPassword = async (req, res) => {
     const link = `https://daily-diet.pages.dev/passwordreset/#access_token=${token}`;
 
     await transporter.sendMail({
-      from: "daily.diet.notifications@gmail.com",
+      from: "daily.diet.team@gmail.com",
       to: email,
       subject: "Daily Diet - Password Reset Request",
       html: passwordResetRequestMailTemplate(
@@ -426,7 +426,7 @@ export const changePassword = async (req, res) => {
     const link = `https://daily-diet.pages.dev/`;
 
     await transporter.sendMail({
-      from: "daily.diet.notifications@gmail.com",
+      from: "daily.diet.team@gmail.com",
       to: email,
       subject: "Daily Diet - Password Successfully Changed",
       html: passwordChangeConfirmationMailTemplate(

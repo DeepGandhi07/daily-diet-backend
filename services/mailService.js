@@ -148,7 +148,7 @@ export const transporter = nodemailer.createTransport({
   secure: false,
   auth: {
     type: "OAuth2",
-    user: "daily.diet.notifications@gmail.com",
+    user: "daily.diet.team@gmail.com",
     clientId: process.env.GMAIL_CLIENT_ID,
     accessToken,
     clientSecret: process.env.GMAIL_CLIENT_SECRET,
