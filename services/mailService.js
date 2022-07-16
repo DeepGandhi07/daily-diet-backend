@@ -164,7 +164,7 @@ export const messageConfirmationTemplate = (username, email, message) => `
       <hr /><br />
       The Daily Diet team
       <br />
-      <hr />
+      <br />
     </p>
     </article>
     </main>
