@@ -21,6 +21,7 @@ const diarySchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  rating: [Object],
 });
 
 export default mongoose.model("Diary", diarySchema);

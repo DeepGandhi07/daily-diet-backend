@@ -34,26 +34,83 @@ export const updateDiary = async (req, res) => {
 
   const diary = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("Diary not found");
+  try {
+    if (!mongoose.Types.ObjectId.isValid(_id))
+      return res.status(404).send("Diary not found");
 
-  const updatedDiary = await Diary.findOneAndUpdate(
-    { _id, creator: req.userId },
-    diary,
-    {
-      new: true,
-    }
-  );
-  res.json(updatedDiary);
+    const updatedDiary = await Diary.findOneAndUpdate(
+      { _id, creator: req.userId },
+      diary,
+      {
+        new: true,
+      }
+    );
+    res.json(updatedDiary);
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
 };
 
 export const deleteDiary = async (req, res) => {
   const { id: _id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send("Diary not found");
+  try {
+    if (!mongoose.Types.ObjectId.isValid(_id))
+      return res.status(404).send("Diary not found");
 
-  await Diary.findOneAndRemove({ _id, creator: req.userId });
+    await Diary.findOneAndRemove({ _id, creator: req.userId });
 
-  res.json({ message: "Diary deleted" });
+    res.json({ message: "Diary deleted" });
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+};
+
+export const rateDiary = async (req, res) => {
+  const { id: _id } = req.params;
+
+  const { userRating } = req.body;
+
+  try {
+    const existingDiary = await Diary.findOne({ _id });
+    if (!existingDiary)
+      return res.status(404).json({ message: "Diary not found" });
+
+    if (existingDiary.creator === req.userId)
+      return res
+        .status(400)
+        .json({ message: "You cannot rate your own diary" });
+
+    const alreadyRated = existingDiary.filter(
+      (rating) => rating.user === req.userId
+    );
+
+    let updatedDiary;
+
+    if (alreadyRated) {
+      const ratingUpdate = existingDiary.rating.map((elem) =>
+        elem.user === req.userId ? userRating : elem
+      );
+
+      updatedDiary = await Diary.findOneAndUpdate(
+        { _id },
+        { rating: ratingUpdate },
+        {
+          new: true,
+        }
+      );
+    } else {
+      updatedDiary = await Diary.findOneAndUpdate(
+        { _id },
+        { rating: existingDiary.rating.push(userRating) },
+        {
+          new: true,
+        }
+      );
+    }
+
+    res.json(updatedDiary);
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
 };
