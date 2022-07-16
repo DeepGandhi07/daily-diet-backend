@@ -155,12 +155,17 @@ export const messageConfirmationTemplate = (username, email, message) => `
     </header>
     <main>
     <article>
-      <h3>You have sent us a message with the following content by providing this email (${email}) in the form on our website:</h3>
+    <p>
+      You have sent us a message with the following content by providing this email (${email}) in the form on our website:
       <br />
-      ${message},
+      <br />
+      ${message}
       <br /><br />
+      <hr /><br />
+      The Daily Diet team
+      <br />
       <hr />
-      </p>
+    </p>
     </article>
     </main>
     <footer><a href="https://daily-diet.pages.dev">Daily Diet Homepage</a></footer>
@@ -180,11 +185,13 @@ export const feedbackTemplate = (username, email, message) => `
     </header>
     <main>
     <article>
-      <h3>Message content:</h3>
+      <p>
+      Message content:
       <br />
-      ${message},
+      <br />
+      ${message}
       <br /><br />
-      <h3>Sender ${email}</h3>
+      Sender ${email}
       <br />
       <hr />
       </p>
