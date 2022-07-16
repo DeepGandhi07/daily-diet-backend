@@ -11,6 +11,7 @@ import {
   changePassword,
   changeNewsletterStatus,
   fakeUserNewsletterUnsubscribe,
+  sendMessage,
 } from "../controllers/users.js";
 import auth from "../middleware/auth.js";
 
@@ -27,5 +28,6 @@ router.post("/resetPassword", resetPassword);
 router.patch("/changePassword/:token", changePassword);
 router.patch("/changeNewsletterStatus/:id", auth, changeNewsletterStatus);
 router.patch("/unsubscribe/:token", fakeUserNewsletterUnsubscribe);
+router.post("/sendMessage", sendMessage);
 
 export default router;

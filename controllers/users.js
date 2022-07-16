@@ -8,6 +8,8 @@ import {
   passwordResetRequestMailTemplate,
   passwordChangeConfirmationMailTemplate,
   newsletterSubscribeMailTemplate,
+  messageConfirmationTemplate,
+  feedbackTemplate,
 } from "../services/mailService.js";
 
 export const getUsers = async (req, res) => {
@@ -466,6 +468,29 @@ export const fakeUserNewsletterUnsubscribe = async (req, res) => {
     ).exec();
 
     res.json({ message: "Successfully unsubscribed" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const sendMessage = async (req, res) => {
+  const { username, email, message } = req.body;
+  try {
+    await transporter.sendMail({
+      from: email,
+      to: "daily.diet.team@gmail.com",
+      subject: `Daily Diet - A message from the user ${username}`,
+      html: feedbackTemplate(username, email, message),
+    });
+
+    await transporter.sendMail({
+      from: "daily.diet.team@gmail.com",
+      to: email,
+      subject: "Daily Diet - We got your message",
+      html: messageConfirmationTemplate(username, email, message),
+    });
+
+    res.json({ message: "Message delivered. Thank you" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

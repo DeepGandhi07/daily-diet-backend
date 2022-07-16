@@ -141,6 +141,59 @@ export const newsletterSubscribeMailTemplate = (link, name) => `
   </body>
 </html>`;
 
+export const messageConfirmationTemplate = (username, email, message) => `
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <header>
+      <h1>Daily Diet</h1> 
+      <h2>Hello ${username}</h2>
+      <h3>Thank you for your message</h3>
+    </header>
+    <main>
+    <article>
+      <h3>You have sent us a message with the following content by providing this email (${email}) in the form on our website:</h3>
+      <br />
+      ${message},
+      <br /><br />
+      <hr />
+      </p>
+    </article>
+    </main>
+    <footer><a href="https://daily-diet.pages.dev">Daily Diet Homepage</a></footer>
+  </body>
+</html>`;
+
+export const feedbackTemplate = (username, email, message) => `
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <header>
+      <h1>Daily Diet</h1> 
+      <h2>A message from ${username}</h2>
+    </header>
+    <main>
+    <article>
+      <h3>Message content:</h3>
+      <br />
+      ${message},
+      <br /><br />
+      <h3>Sender ${email}</h3>
+      <br />
+      <hr />
+      </p>
+    </article>
+    </main>
+    <footer><a href="https://daily-diet.pages.dev">Daily Diet Homepage</a></footer>
+  </body>
+</html>`;
+
 export const transporter = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
