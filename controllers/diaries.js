@@ -2,10 +2,14 @@ import mongoose from "mongoose";
 import Diary from "../models/diaryModel.js";
 
 const calculateAverageRate = (diary) => {
-  return (
-    diary.rating.reduce((acc, rating) => acc + rating.rate, 0) /
-    diary.rating.length
-  );
+  if (diary.rating) {
+    return (
+      diary.rating.reduce((acc, rating) => acc + rating.rate, 0) /
+      diary.rating.length
+    );
+  } else {
+    return 0;
+  }
 };
 
 export const getDiaries = async (req, res) => {
