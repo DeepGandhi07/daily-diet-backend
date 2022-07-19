@@ -71,8 +71,8 @@ export const updateDiary = async (req, res) => {
     res.json({
       ...updatedDiary._doc,
       rating: {
-        rates: updatedDiary.rating.length,
-        average: calculateAverageRate(updatedDiary),
+        rates: updatedDiary._doc.rating.length,
+        average: calculateAverageRate(updatedDiary._doc),
       },
     });
   } catch (error) {
@@ -141,8 +141,8 @@ export const rateDiary = async (req, res) => {
     res.json({
       ...updatedDiary._doc,
       rating: {
-        rates: updatedDiary.rating.length,
-        average: calculateAverageRate(updatedDiary),
+        rates: updatedDiary._doc.rating.length,
+        average: calculateAverageRate(updatedDiary._doc),
       },
     });
   } catch (error) {
