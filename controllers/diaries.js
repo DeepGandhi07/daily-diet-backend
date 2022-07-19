@@ -92,6 +92,10 @@ export const rateDiary = async (req, res) => {
         .status(400)
         .json({ message: "You cannot rate your own diary" });
 
+    const alreadyRatedByTheUser = Diary.find({
+      "rating.user": `${req.userId}`,
+    });
+
     const updatedDiary = await Diary.findOneAndUpdate(
       { _id },
       { rating: [...existingDiary.rating, { user: req.userId, rate }] },
@@ -100,7 +104,21 @@ export const rateDiary = async (req, res) => {
       }
     );
 
-    res.json(updatedDiary);
+    res.json({
+      _id: updatedDiary._id,
+      title: updatedDiary.title,
+      id: updatedDiary.id,
+      meals: updatedDiary.meals,
+      nutrients: updatedDiary.nutrients,
+      calorieAdjustment: updatedDiary.calorieAdjustment,
+      creator: updatedDiary.creator,
+      createdAt: updatedDiary.createdAt,
+      private: updatedDiary.private,
+      rating: {
+        average: calculateAverageRate(updatedDiary),
+        rates: updatedDiary.rating.length,
+      },
+    });
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
