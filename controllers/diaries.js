@@ -69,7 +69,7 @@ export const updateDiary = async (req, res) => {
     );
 
     res.json({
-      ...updatedDiary,
+      ...updatedDiary._doc,
       rating: {
         rates: updatedDiary.rating.length,
         average: calculateAverageRate(updatedDiary),
@@ -110,14 +110,14 @@ export const rateDiary = async (req, res) => {
         .status(400)
         .json({ message: "You cannot rate your own diary" });
 
-    const alreadyRated = existingDiary.rating.filter(
+    const alreadyRated = existingDiary._doc.rating.filter(
       (rating) => rating.user === req.userId
     );
 
     let updatedDiary;
 
     if (alreadyRated) {
-      const ratingUpdate = existingDiary.rating.map((elem) =>
+      const ratingUpdate = existingDiary._doc.rating.map((elem) =>
         elem.user === req.userId ? { user: req.userId, rate } : elem
       );
 
@@ -131,7 +131,7 @@ export const rateDiary = async (req, res) => {
     } else {
       updatedDiary = await Diary.findOneAndUpdate(
         { _id },
-        { rating: [...existingDiary.rating, { user: req.userId, rate }] },
+        { rating: [...existingDiary._doc.rating, { user: req.userId, rate }] },
         {
           new: true,
         }
@@ -139,7 +139,7 @@ export const rateDiary = async (req, res) => {
     }
 
     res.json({
-      ...updatedDiary,
+      ...updatedDiary._doc,
       rating: {
         rates: updatedDiary.rating.length,
         average: calculateAverageRate(updatedDiary),
