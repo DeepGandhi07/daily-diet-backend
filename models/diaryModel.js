@@ -22,7 +22,9 @@ const diarySchema = mongoose.Schema({
     default: false,
   },
   ratingPrivate: [Object],
-  ratingPublic: Object,
+  ratingPublic: {
+    type: mongoose.SchemaTypes.Mixed,
+  },
 });
 
 export default mongoose.model("Diary", diarySchema);
