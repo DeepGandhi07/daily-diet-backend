@@ -14,20 +14,7 @@ const calculateAverageRate = (ratingPrivate) => {
 
 export const getDiaries = async (req, res) => {
   try {
-    const diaries = await Diary.find({
-      fields: [
-        "_id",
-        "title",
-        "id",
-        "meals",
-        "nutrients",
-        "calorieAdjustment",
-        "creator",
-        "createdAt",
-        "private",
-        "ratingPublic",
-      ],
-    });
+    const diaries = await Diary.find({ fields: { ratingPrivate: false } });
 
     res.status(200).json(diaries);
   } catch (error) {

@@ -23,7 +23,14 @@ const diarySchema = mongoose.Schema({
   },
   ratingPrivate: [Object],
   ratingPublic: {
-    type: mongoose.SchemaTypes.Mixed,
+    average: {
+      type: Number,
+      default: 0,
+    },
+    rates: {
+      type: Number,
+      default: 0,
+    },
   },
 });
 
