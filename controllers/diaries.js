@@ -15,17 +15,8 @@ const calculateAverageRate = (diary) => {
 export const getDiaries = async (req, res) => {
   try {
     const diaries = await Diary.find();
-    const protectedDiaries = diaries.map((diary) => {
-      return {
-        ...diary._doc,
-        rating: {
-          rates: diary._doc.rating.length,
-          average: calculateAverageRate(diary._doc),
-        },
-      };
-    });
 
-    res.status(200).json(protectedDiaries);
+    res.status(200).json(diaries);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -58,23 +49,14 @@ export const updateDiary = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(_id))
       return res.status(404).send("Diary not found");
 
-    const existingDiary = await Diary.findOne({ _id });
-
     const updatedDiary = await Diary.findOneAndUpdate(
       { _id, creator: req.userId },
-      { ...diary, rating: existingDiary.rating },
+      diary,
       {
         new: true,
       }
     );
-
-    res.json({
-      ...updatedDiary._doc,
-      rating: {
-        rates: updatedDiary._doc.rating.length,
-        average: calculateAverageRate(updatedDiary._doc),
-      },
-    });
+    res.json(updatedDiary);
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
@@ -110,41 +92,15 @@ export const rateDiary = async (req, res) => {
         .status(400)
         .json({ message: "You cannot rate your own diary" });
 
-    const alreadyRated = existingDiary._doc.rating.filter(
-      (rating) => rating.user === req.userId
+    const updatedDiary = await Diary.findOneAndUpdate(
+      { _id },
+      { rating: [...existingDiary.rating, { user: req.userId, rate }] },
+      {
+        new: true,
+      }
     );
 
-    let updatedDiary;
-
-    if (alreadyRated) {
-      const ratingUpdate = existingDiary._doc.rating.map((elem) =>
-        elem.user === req.userId ? { user: req.userId, rate } : elem
-      );
-
-      updatedDiary = await Diary.findOneAndUpdate(
-        { _id },
-        { rating: ratingUpdate },
-        {
-          new: true,
-        }
-      );
-    } else {
-      updatedDiary = await Diary.findOneAndUpdate(
-        { _id },
-        { rating: [...existingDiary._doc.rating, { user: req.userId, rate }] },
-        {
-          new: true,
-        }
-      );
-    }
-
-    res.json({
-      ...updatedDiary._doc,
-      rating: {
-        rates: updatedDiary._doc.rating.length,
-        average: calculateAverageRate(updatedDiary._doc),
-      },
-    });
+    res.json(updatedDiary);
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
