@@ -17,10 +17,10 @@ export const getDiaries = async (req, res) => {
     const diaries = await Diary.find();
     const protectedDiaries = diaries.map((diary) => {
       return {
-        ...diary,
+        ...diary._doc,
         rating: {
-          rates: diary.rating.length,
-          average: calculateAverageRate(diary),
+          rates: diary._doc.rating.length,
+          average: calculateAverageRate(diary._doc),
         },
       };
     });
