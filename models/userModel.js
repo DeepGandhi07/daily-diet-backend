@@ -17,11 +17,19 @@ const userSchema = mongoose.Schema({
       type: Number,
       default: 0,
     },
+    gender: {
+      type: String,
+      default: null,
+    },
     activity: {
       type: Number,
       default: 0,
     },
     bmr: {
+      type: Number,
+      default: 0,
+    },
+    tdee: {
       type: Number,
       default: 0,
     },
