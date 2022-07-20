@@ -66,10 +66,7 @@ export const updateDiary = async (req, res) => {
       creator: updatedDiary.creator,
       createdAt: updatedDiary.createdAt,
       private: updatedDiary.private,
-      ratingPublic: {
-        average: calculateAverageRate(updatedDiary.ratingPrivate),
-        rates: updatedDiary.ratingPrivate.length,
-      },
+      ratingPublic: updatedDiary.ratingPublic,
     });
   } catch (error) {
     res.status(409).json({ message: error.message });
@@ -117,6 +114,13 @@ export const rateDiary = async (req, res) => {
           ...existingDiary.ratingPrivate,
           { user: req.userId, rate },
         ],
+        ratingPublic: {
+          average: calculateAverageRate([
+            ...existingDiary.ratingPrivate,
+            { user: req.userId, rate },
+          ]),
+          rates: existingDiary.ratingPrivate.length + 1,
+        },
       },
       {
         new: true,
@@ -133,10 +137,7 @@ export const rateDiary = async (req, res) => {
       creator: updatedDiary.creator,
       createdAt: updatedDiary.createdAt,
       private: updatedDiary.private,
-      ratingPublic: {
-        average: calculateAverageRate(updatedDiary.ratingPrivate),
-        rates: updatedDiary.ratingPrivate.length,
-      },
+      ratingPublic: updatedDiary.ratingPublic,
     });
   } catch (error) {
     res.status(409).json({ message: error.message });
