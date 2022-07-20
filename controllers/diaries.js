@@ -1,6 +1,21 @@
 import mongoose from "mongoose";
 import Diary from "../models/diaryModel.js";
 
+const returnResponse = (obj) => {
+  return res.json({
+    _id: obj._id,
+    title: obj.title,
+    id: obj.id,
+    meals: obj.meals,
+    nutrients: obj.nutrients,
+    calorieAdjustment: obj.calorieAdjustment,
+    creator: obj.creator,
+    createdAt: obj.createdAt,
+    private: obj.private,
+    ratingPublic: obj.ratingPublic,
+  });
+};
+
 const calculateAverageRate = (ratingPrivate) => {
   if (ratingPrivate) {
     return (
@@ -14,7 +29,7 @@ const calculateAverageRate = (ratingPrivate) => {
 
 export const getDiaries = async (req, res) => {
   try {
-    const diaries = await Diary.find().select({ ratingPrivate: 0 });
+    const diaries = await Diary.find().select({ ratingPrivate: 0, __v: 0 });
 
     res.status(200).json(diaries);
   } catch (error) {
@@ -34,7 +49,7 @@ export const createDiary = async (req, res) => {
   try {
     await newDiary.save();
 
-    res.status(201).json(newDiary);
+    res.status(201).res.json(returnResponse(newDiary));
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
@@ -51,23 +66,19 @@ export const updateDiary = async (req, res) => {
 
     const updatedDiary = await Diary.findOneAndUpdate(
       { _id, creator: req.userId },
-      { ...diary },
+      {
+        ...diary,
+        ratingPrivate: [],
+        ratingPublic: {
+          average: 0,
+          rates: 0,
+        },
+      },
       {
         new: true,
       }
     );
-    res.json({
-      _id: updatedDiary._id,
-      title: updatedDiary.title,
-      id: updatedDiary.id,
-      meals: updatedDiary.meals,
-      nutrients: updatedDiary.nutrients,
-      calorieAdjustment: updatedDiary.calorieAdjustment,
-      creator: updatedDiary.creator,
-      createdAt: updatedDiary.createdAt,
-      private: updatedDiary.private,
-      ratingPublic: updatedDiary.ratingPublic,
-    });
+    res.json(returnResponse(updatedDiary));
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
@@ -107,15 +118,15 @@ export const rateDiary = async (req, res) => {
       (rating) => rating.user !== req.userId
     );
 
-    const sum = [...ratingWithoutUser, { user: req.userId, rate }];
+    const newRating = [...ratingWithoutUser, { user: req.userId, rate }];
 
     const updatedDiary = await Diary.findOneAndUpdate(
       { _id },
       {
-        ratingPrivate: sum,
+        ratingPrivate: newRating,
         ratingPublic: {
-          average: calculateAverageRate(sum),
-          rates: sum.length,
+          average: calculateAverageRate(newRating),
+          rates: newRating.length,
         },
       },
       {
@@ -123,18 +134,7 @@ export const rateDiary = async (req, res) => {
       }
     );
 
-    res.json({
-      _id: updatedDiary._id,
-      title: updatedDiary.title,
-      id: updatedDiary.id,
-      meals: updatedDiary.meals,
-      nutrients: updatedDiary.nutrients,
-      calorieAdjustment: updatedDiary.calorieAdjustment,
-      creator: updatedDiary.creator,
-      createdAt: updatedDiary.createdAt,
-      private: updatedDiary.private,
-      ratingPublic: updatedDiary.ratingPublic,
-    });
+    res.json(returnResponse(updatedDiary));
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
