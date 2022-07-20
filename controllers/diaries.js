@@ -14,7 +14,7 @@ const calculateAverageRate = (ratingPrivate) => {
 
 export const getDiaries = async (req, res) => {
   try {
-    const diaries = await Diary.find({ fields: { ratingPrivate: false } });
+    const diaries = await Diary.find().select({ ratingPrivate: 0 });
 
     res.status(200).json(diaries);
   } catch (error) {
@@ -103,23 +103,19 @@ export const rateDiary = async (req, res) => {
         .status(400)
         .json({ message: "You cannot rate your own diary" });
 
-    // const alreadyRatedByTheUser = Diary.find({
-    //   "ratingPrivate.user": `${req.userId}`,
-    // });
+    const ratingWithoutUser = existingDiary._doc.ratingPrivate.filter(
+      (rating) => rating.user !== req.userId
+    );
+
+    const sum = [...ratingWithoutUser, { user: req.userId, rate }];
 
     const updatedDiary = await Diary.findOneAndUpdate(
       { _id },
       {
-        ratingPrivate: [
-          ...existingDiary.ratingPrivate,
-          { user: req.userId, rate },
-        ],
+        ratingPrivate: sum,
         ratingPublic: {
-          average: calculateAverageRate([
-            ...existingDiary.ratingPrivate,
-            { user: req.userId, rate },
-          ]),
-          rates: existingDiary.ratingPrivate.length + 1,
+          average: calculateAverageRate(sum),
+          rates: sum.length,
         },
       },
       {
