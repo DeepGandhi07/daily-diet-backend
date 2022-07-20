@@ -49,7 +49,7 @@ export const createDiary = async (req, res) => {
   try {
     await newDiary.save();
 
-    res.status(201).res.json(returnResponse(newDiary));
+    res.status(201).json(returnResponse(newDiary));
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
