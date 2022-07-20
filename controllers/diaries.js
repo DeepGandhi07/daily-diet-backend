@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Diary from "../models/diaryModel.js";
 
 const returnResponse = (obj) => {
-  return res.json({
+  return {
     _id: obj._id,
     title: obj.title,
     id: obj.id,
@@ -13,7 +13,7 @@ const returnResponse = (obj) => {
     createdAt: obj.createdAt,
     private: obj.private,
     ratingPublic: obj.ratingPublic,
-  });
+  };
 };
 
 const calculateAverageRate = (ratingPrivate) => {
