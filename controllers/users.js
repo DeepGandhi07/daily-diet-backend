@@ -429,7 +429,7 @@ export const changePassword = async (req, res) => {
 
     await transporter.sendMail({
       from: "daily.diet.team@gmail.com",
-      to: email,
+      to: existingUser.email,
       subject: "Daily Diet - Password Successfully Changed",
       html: passwordChangeConfirmationMailTemplate(
         link,
