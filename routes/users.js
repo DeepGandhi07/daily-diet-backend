@@ -4,6 +4,7 @@ import {
   externalSignin,
   signin,
   signup,
+  signupdemo,
   updateProfile,
   updateUserData,
   deleteUser,
