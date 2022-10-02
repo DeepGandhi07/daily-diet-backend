@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import User from "../models/userModel.js";
+import DemoUser from "../models/demoUserModel.js";
 import { v4 as uuidv4 } from "uuid";
 import {
   transporter,
@@ -135,6 +136,39 @@ export const signup = async (req, res) => {
       process.env.SECRET,
       {
         expiresIn: "24h",
+      }
+    );
+
+    res.status(200).json({
+      user: {
+        name: user.name,
+        email: user.email,
+        profile: user.profile,
+        newsletter: user.newsletter,
+      },
+      token,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const signupdemo = async (req, res) => {
+  try {
+    const user = await DemoUser.create({
+      name: uuidv4(),
+      password: uuidv4(),
+      email: uuidv4() + "@gmail.com",
+    });
+
+    await user.save();
+
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.SECRET,
+      {
+        // expiresIn: "24h",
+        expiresIn: "5m",
       }
     );
 
