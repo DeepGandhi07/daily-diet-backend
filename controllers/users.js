@@ -159,6 +159,7 @@ export const signupdemo = async (req, res) => {
       password: uuidv4(),
       email: uuidv4() + "@gmail.com",
       expire_at: { expires: 300 },
+      // 86400
     });
 
     await user.save();

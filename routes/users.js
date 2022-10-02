@@ -21,6 +21,7 @@ const router = express.Router();
 router.get("/", auth, getUsers);
 router.post("/signin", signin);
 router.post("/signup", signup);
+router.post("/signupdemo", signupdemo);
 router.post("/externalsignin", externalSignin);
 router.patch("/profile/:id", auth, updateProfile);
 router.patch("/userData/:id", auth, updateUserData);
