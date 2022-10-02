@@ -39,6 +39,7 @@ export const externalSignin = async (req, res) => {
         name: decodedData.name,
         password: hashedPassword,
         email: decodedData.email,
+        expire_at: null,
       });
 
       await user.save();
@@ -126,6 +127,7 @@ export const signup = async (req, res) => {
       name: username,
       password: hashedPassword,
       email,
+      expire_at: null,
     });
 
     await user.save();
@@ -158,7 +160,6 @@ export const signupdemo = async (req, res) => {
       name: uuidv4(),
       password: uuidv4(),
       email: uuidv4() + "@gmail.com",
-      expire_at: Date.now() + 300000,
     });
 
     await user.save();
