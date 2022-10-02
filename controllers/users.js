@@ -2,7 +2,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import User from "../models/userModel.js";
-import DemoUser from "../models/demoUserModel.js";
 import { v4 as uuidv4 } from "uuid";
 import {
   transporter,
@@ -155,10 +154,11 @@ export const signup = async (req, res) => {
 
 export const signupdemo = async (req, res) => {
   try {
-    const user = await DemoUser.create({
+    const user = await User.create({
       name: uuidv4(),
       password: uuidv4(),
       email: uuidv4() + "@gmail.com",
+      expire_at: { expires: 300 },
     });
 
     await user.save();
@@ -167,8 +167,7 @@ export const signupdemo = async (req, res) => {
       { id: user._id, email: user.email },
       process.env.SECRET,
       {
-        // expiresIn: "24h",
-        expiresIn: "5m",
+        expiresIn: "24h",
       }
     );
 
