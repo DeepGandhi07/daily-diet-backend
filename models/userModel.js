@@ -86,7 +86,7 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  expire_at: { type: Date, default: Date.now, expires: "24h" },
+  expire_at: { type: Date, default: Date.now, expires: 86400 },
 });
 
 export default mongoose.model("User", userSchema);
