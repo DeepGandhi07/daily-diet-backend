@@ -66,10 +66,6 @@ const userSchema = mongoose.Schema({
       },
     },
   },
-  createdAt: {
-    type: String,
-    default: new Date().toLocaleDateString("en-GB"),
-  },
   lastLogged: {
     type: String,
     default: new Date().toLocaleDateString("en-GB"),
@@ -87,6 +83,7 @@ const userSchema = mongoose.Schema({
     default: false,
   },
   expire_at: { type: Date, default: Date.now, expires: 86400 },
+  createdAt: { type: Date, expires: "24h", default: Date.now },
 });
 
 export default mongoose.model("User", userSchema);
