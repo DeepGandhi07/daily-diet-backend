@@ -82,7 +82,6 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  expire_at: { type: Date, default: Date.now, expires: 86400 },
   createdAt: { type: Date, expires: "24h", default: Date.now },
 });
 
