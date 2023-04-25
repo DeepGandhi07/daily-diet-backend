@@ -4,14 +4,14 @@ import mongoose from "mongoose";
 import User from "../models/userModel.js";
 import { v4 as uuidv4 } from "uuid";
 import { generateRandomStringNumber } from "../utils.js";
-import {
-  transporter,
-  passwordResetRequestMailTemplate,
-  passwordChangeConfirmationMailTemplate,
-  newsletterSubscribeMailTemplate,
-  messageConfirmationTemplate,
-  feedbackTemplate,
-} from "../services/mailService.js";
+// import {
+//   transporter,
+//   passwordResetRequestMailTemplate,
+//   passwordChangeConfirmationMailTemplate,
+//   newsletterSubscribeMailTemplate,
+//   messageConfirmationTemplate,
+//   feedbackTemplate,
+// } from "../services/mailService.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -324,12 +324,12 @@ export const changeNewsletterStatus = async (req, res) => {
 
         const link = `https://daily-diet.pages.dev/unsubscribe/#access_token=${token}`;
 
-        await transporter.sendMail({
-          from: "daily.diet.team@gmail.com",
-          to: updatedUser.email,
-          subject: "Daily Diet - Newsletter Subscribtion",
-          html: newsletterSubscribeMailTemplate(link, updatedUser.name),
-        });
+        // await transporter.sendMail({
+        //   from: "daily.diet.team@gmail.com",
+        //   to: updatedUser.email,
+        //   subject: "Daily Diet - Newsletter Subscribtion",
+        //   html: newsletterSubscribeMailTemplate(link, updatedUser.name),
+        // });
       }
 
       res.json({
@@ -363,12 +363,12 @@ export const changeNewsletterStatus = async (req, res) => {
 
         const link = `https://daily-diet.pages.dev/unsubscribe/#access_token=${token}`;
 
-        await transporter.sendMail({
-          from: "daily.diet.team@gmail.com",
-          to: updatedUser.email,
-          subject: "Daily Diet - Newsletter Subscribtion",
-          html: newsletterSubscribeMailTemplate(link, updatedUser.name),
-        });
+        // await transporter.sendMail({
+        //   from: "daily.diet.team@gmail.com",
+        //   to: updatedUser.email,
+        //   subject: "Daily Diet - Newsletter Subscribtion",
+        //   html: newsletterSubscribeMailTemplate(link, updatedUser.name),
+        // });
       }
 
       res.json({
@@ -425,16 +425,16 @@ export const resetPassword = async (req, res) => {
 
     const link = `https://daily-diet.pages.dev/passwordreset/#access_token=${token}`;
 
-    await transporter.sendMail({
-      from: "daily.diet.team@gmail.com",
-      to: email,
-      subject: "Daily Diet - Password Reset Request",
-      html: passwordResetRequestMailTemplate(
-        link,
-        existingUser.name,
-        existingUser.email
-      ),
-    });
+    // await transporter.sendMail({
+    //   from: "daily.diet.team@gmail.com",
+    //   to: email,
+    //   subject: "Daily Diet - Password Reset Request",
+    //   html: passwordResetRequestMailTemplate(
+    //     link,
+    //     existingUser.name,
+    //     existingUser.email
+    //   ),
+    // });
 
     res.json({ message: "Password reset link sent" });
   } catch (error) {
@@ -476,16 +476,16 @@ export const changePassword = async (req, res) => {
 
     const link = `https://daily-diet.pages.dev/`;
 
-    await transporter.sendMail({
-      from: "daily.diet.team@gmail.com",
-      to: existingUser.email,
-      subject: "Daily Diet - Password Successfully Changed",
-      html: passwordChangeConfirmationMailTemplate(
-        link,
-        existingUser.name,
-        existingUser.email
-      ),
-    });
+    // await transporter.sendMail({
+    //   from: "daily.diet.team@gmail.com",
+    //   to: existingUser.email,
+    //   subject: "Daily Diet - Password Successfully Changed",
+    //   html: passwordChangeConfirmationMailTemplate(
+    //     link,
+    //     existingUser.name,
+    //     existingUser.email
+    //   ),
+    // });
 
     res.json({ message: "Password successfully changed" });
   } catch (error) {
@@ -525,19 +525,19 @@ export const fakeUserNewsletterUnsubscribe = async (req, res) => {
 export const sendMessage = async (req, res) => {
   const { username, email, message } = req.body;
   try {
-    await transporter.sendMail({
-      from: email,
-      to: "daily.diet.team@gmail.com",
-      subject: `Daily Diet - A message from the user ${username}`,
-      html: feedbackTemplate(username, email, message),
-    });
+    // await transporter.sendMail({
+    //   from: email,
+    //   to: "daily.diet.team@gmail.com",
+    //   subject: `Daily Diet - A message from the user ${username}`,
+    //   html: feedbackTemplate(username, email, message),
+    // });
 
-    await transporter.sendMail({
-      from: "daily.diet.team@gmail.com",
-      to: email,
-      subject: "Daily Diet - We got your message",
-      html: messageConfirmationTemplate(username, email, message),
-    });
+    // await transporter.sendMail({
+    //   from: "daily.diet.team@gmail.com",
+    //   to: email,
+    //   subject: "Daily Diet - We got your message",
+    //   html: messageConfirmationTemplate(username, email, message),
+    // });
 
     res.json({ message: "Message delivered. Thank you" });
   } catch (error) {
